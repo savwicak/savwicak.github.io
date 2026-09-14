@@ -3,7 +3,10 @@ import { Home, Star, List, Camera, User } from "lucide-react";
 
 const Navbar = ({ active, onSelect }) => {
   const itemRefs = useRef([]);
+  const navRef = useRef(null);
   const activeRef = useRef(active);
+  const hideTimeoutRef = useRef(null);
+  const isMouseOverNav = useRef(false);
 
   const items = [
     { name: "Home", Icon: Home },
@@ -14,24 +17,139 @@ const Navbar = ({ active, onSelect }) => {
   ];
 
   useEffect(() => {
-    activeRef.current = active;
-  }, [active]);
+      activeRef.current = active;
+    }, [active]);
+
+    const showNavbar = () => {
+    const nav = navRef.current;
+
+    if (!nav) return;
+
+    if (hideTimeoutRef.current) {
+      clearTimeout(hideTimeoutRef.current);
+      hideTimeoutRef.current = null;
+    }
+
+    gsap.killTweensOf(nav);
+
+    gsap.timeline()
+      .to(nav, {
+        y: 8,
+        scaleX: 1.12,
+        scaleY: 1.12,
+        duration: 0.2,
+        ease: "back.out(3)",
+      })
+      .to(nav, {
+        y: 0,
+        scaleX: 1,
+        scaleY: 1,
+        duration: 0.3,
+        ease: "elastic.out(1, 0.5)",
+      });
+  };
+
+  const startHideTimer = () => {
+    if (hideTimeoutRef.current) {
+      clearTimeout(hideTimeoutRef.current);
+    }
+
+    hideTimeoutRef.current = setTimeout(() => {
+      hideTimeoutRef.current = null;
+
+      if (!isMouseOverNav.current) {
+        hideNavbar();
+      }
+    }, 700);
+  };
+
+  const hideNavbar = () => {
+    const nav = navRef.current;
+
+    if (!nav || isMouseOverNav.current) return;
+
+    gsap.killTweensOf(nav);
+
+    gsap.timeline()
+      .to(nav, {
+        scaleX: 0.96,
+        scaleY: 0.96,
+        duration: 0.08,
+        ease: "power2.in",
+      })
+      .to(nav, {
+        y: "-125%",
+        scaleX: 0.75,
+        scaleY: 0.75,
+        duration: 0.35,
+        ease: "back.in(2.5)",
+      });
+  };
 
   useEffect(() => {
+    const nav = navRef.current;
+
+    if (!nav) return;
+
+    gsap.set(nav, {
+      y: "-125%",
+      scaleX: 0.75,
+      scaleY: 0.75,
+    });
+
+    const handleKeyDown = (e) => {
+      if (e.key !== "Tab") return;
+
+      showNavbar();
+
+      if (!isMouseOverNav.current) {
+        startHideTimer();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
     return () => {
-      itemRefs.current.forEach((el) => el && gsap.killTweensOf(el));
+      document.removeEventListener("keydown", handleKeyDown);
+
+      if (hideTimeoutRef.current) {
+        clearTimeout(hideTimeoutRef.current);
+      }
+
+      gsap.killTweensOf(nav);
     };
   }, []);
 
-  const getEl = (index) => itemRefs.current[index];
+  const handleNavMouseEnter = () => {
+    isMouseOverNav.current = true;
+
+    if (hideTimeoutRef.current) {
+      clearTimeout(hideTimeoutRef.current);
+      hideTimeoutRef.current = null;
+    }
+
+    // JANGAN showNavbar() DI SINI
+  };
+
+  const handleNavMouseLeave = () => {
+  isMouseOverNav.current = false;
+
+    startHideTimer();
+  };
+
+  const getEl = (index) => {
+    return itemRefs.current[index];
+  };
 
   const handleMouseEnter = (index) => {
     if (index === activeRef.current) return;
 
     const el = getEl(index);
+
     if (!el) return;
 
     gsap.killTweensOf(el);
+
     gsap.to(el, {
       y: -12,
       rotation: 5,
@@ -44,9 +162,11 @@ const Navbar = ({ active, onSelect }) => {
     if (index === activeRef.current) return;
 
     const el = getEl(index);
+
     if (!el) return;
 
     gsap.killTweensOf(el);
+
     gsap.to(el, {
       y: 0,
       rotation: 0,
@@ -57,6 +177,7 @@ const Navbar = ({ active, onSelect }) => {
 
   const handleClick = (index) => {
     const el = getEl(index);
+
     if (!el) return;
 
     if (index === activeRef.current) {
@@ -81,6 +202,7 @@ const Navbar = ({ active, onSelect }) => {
 
     if (prevEl) {
       gsap.killTweensOf(prevEl);
+
       gsap.to(prevEl, {
         y: 0,
         rotation: 0,
@@ -107,10 +229,25 @@ const Navbar = ({ active, onSelect }) => {
       });
   };
 
+  useEffect(() => {
+    return () => {
+      itemRefs.current.forEach((el) => {
+        if (el) {
+          gsap.killTweensOf(el);
+        }
+      });
+    };
+  }, []);
+
   return (
     <nav
-      className="fixed left-1/2 -translate-x-1/2 z-50 bottom-4 sm:bottom-6 w-[94vw] sm:w-[min(92vw,575px)] max-w-[575px] h-[64px] sm:h-[86px] rounded-full bg-[#505050] flex items-center justify-between sm:justify-center gap-1 sm:gap-5 px-2 sm:px-5"
-      style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
+      ref={navRef}
+      onMouseEnter={handleNavMouseEnter}
+      onMouseLeave={handleNavMouseLeave}
+      className="fixed left-1/2 top-4 z-50 flex h-[64px] w-[94vw] max-w-[575px] -translate-x-1/2 items-center justify-between gap-1 rounded-full bg-[#505050] px-2 sm:top-6 sm:h-[86px] sm:w-[min(92vw,575px)] sm:justify-center sm:gap-5 sm:px-5"
+      style={{
+        paddingTop: "env(safe-area-inset-top, 0px)",
+      }}
     >
       {items.map((item, index) => {
         const isActive = active === index;
@@ -126,14 +263,20 @@ const Navbar = ({ active, onSelect }) => {
             onMouseLeave={() => handleMouseLeave(index)}
             aria-label={item.name}
             aria-current={isActive ? "page" : undefined}
-            className="nav-item relative flex items-center justify-center shrink-0 w-[46px] h-[46px] sm:w-[70px] sm:h-[70px] rounded-full border-[2px] sm:border-[3px] border-[#C7C7C7] bg-[#575757] cursor-pointer p-0 outline-none"
+            className="nav-item relative flex h-[46px] w-[46px] shrink-0 cursor-pointer items-center justify-center rounded-full border-[2px] border-[#C7C7C7] bg-[#575757] p-0 outline-none sm:h-[70px] sm:w-[70px] sm:border-[3px]"
           >
             <span
-              className={`absolute inset-0 rounded-full transition-all duration-300 ${isActive ? "bg-[#FF5252] opacity-[0.12] scale-[0.82]" : "bg-transparent opacity-0"}`}
+              className={`absolute inset-0 rounded-full transition-all duration-300 ${
+                isActive
+                  ? "scale-[0.82] bg-[#FF5252] opacity-[0.12]"
+                  : "scale-100 bg-transparent opacity-0"
+              }`}
             />
 
             <Icon
-              className={`relative z-10 w-[20px] h-[20px] sm:w-[34px] sm:h-[34px] select-none pointer-events-none transition-colors duration-300 ${isActive ? "text-[#FF5252]" : "text-[#fdfafa]"}`}
+              className={`pointer-events-none relative z-10 h-[20px] w-[20px] select-none transition-colors duration-300 sm:h-[34px] sm:w-[34px] ${
+                isActive ? "text-[#FF5252]" : "text-[#fdfafa]"
+              }`}
             />
           </button>
         );

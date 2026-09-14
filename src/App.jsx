@@ -28,7 +28,7 @@ const App = () => {
   const ActivePage = PAGES[activeTab];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 poppins-regular">
       {/* pb-32 biar konten paling bawah nggak ketutupan navbar
           yang posisinya fixed di bawah */}
       <main className="pb-32">
