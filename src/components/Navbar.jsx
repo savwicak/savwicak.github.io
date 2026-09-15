@@ -17,12 +17,11 @@ const Navbar = ({ active, onSelect }) => {
   ];
 
   useEffect(() => {
-      activeRef.current = active;
-    }, [active]);
+    activeRef.current = active;
+  }, [active]);
 
-    const showNavbar = () => {
+  const showNavbar = () => {
     const nav = navRef.current;
-
     if (!nav) return;
 
     if (hideTimeoutRef.current) {
@@ -32,11 +31,12 @@ const Navbar = ({ active, onSelect }) => {
 
     gsap.killTweensOf(nav);
 
-    gsap.timeline()
+    gsap
+      .timeline()
       .to(nav, {
         y: 8,
-        scaleX: 1.12,
-        scaleY: 1.12,
+        scaleX: 1.04,
+        scaleY: 1.04,
         duration: 0.2,
         ease: "back.out(3)",
       })
@@ -46,6 +46,29 @@ const Navbar = ({ active, onSelect }) => {
         scaleY: 1,
         duration: 0.3,
         ease: "elastic.out(1, 0.5)",
+      });
+  };
+
+  const hideNavbar = () => {
+    const nav = navRef.current;
+    if (!nav || isMouseOverNav.current) return;
+
+    gsap.killTweensOf(nav);
+
+    gsap
+      .timeline()
+      .to(nav, {
+        scaleX: 0.96,
+        scaleY: 0.96,
+        duration: 0.08,
+        ease: "power2.in",
+      })
+      .to(nav, {
+        y: "-150%",
+        scaleX: 0.75,
+        scaleY: 0.75,
+        duration: 0.35,
+        ease: "back.in(2.5)",
       });
   };
 
@@ -63,36 +86,12 @@ const Navbar = ({ active, onSelect }) => {
     }, 700);
   };
 
-  const hideNavbar = () => {
-    const nav = navRef.current;
-
-    if (!nav || isMouseOverNav.current) return;
-
-    gsap.killTweensOf(nav);
-
-    gsap.timeline()
-      .to(nav, {
-        scaleX: 0.96,
-        scaleY: 0.96,
-        duration: 0.08,
-        ease: "power2.in",
-      })
-      .to(nav, {
-        y: "-125%",
-        scaleX: 0.75,
-        scaleY: 0.75,
-        duration: 0.35,
-        ease: "back.in(2.5)",
-      });
-  };
-
   useEffect(() => {
     const nav = navRef.current;
-
     if (!nav) return;
 
     gsap.set(nav, {
-      y: "-125%",
+      y: "-145%",
       scaleX: 0.75,
       scaleY: 0.75,
     });
@@ -127,13 +126,10 @@ const Navbar = ({ active, onSelect }) => {
       clearTimeout(hideTimeoutRef.current);
       hideTimeoutRef.current = null;
     }
-
-    // JANGAN showNavbar() DI SINI
   };
 
   const handleNavMouseLeave = () => {
-  isMouseOverNav.current = false;
-
+    isMouseOverNav.current = false;
     startHideTimer();
   };
 
@@ -145,7 +141,6 @@ const Navbar = ({ active, onSelect }) => {
     if (index === activeRef.current) return;
 
     const el = getEl(index);
-
     if (!el) return;
 
     gsap.killTweensOf(el);
@@ -162,7 +157,6 @@ const Navbar = ({ active, onSelect }) => {
     if (index === activeRef.current) return;
 
     const el = getEl(index);
-
     if (!el) return;
 
     gsap.killTweensOf(el);
@@ -177,13 +171,13 @@ const Navbar = ({ active, onSelect }) => {
 
   const handleClick = (index) => {
     const el = getEl(index);
-
     if (!el) return;
 
     if (index === activeRef.current) {
       gsap.killTweensOf(el);
 
-      gsap.timeline()
+      gsap
+        .timeline()
         .to(el, {
           scale: 1.18,
           duration: 0.15,
@@ -216,7 +210,8 @@ const Navbar = ({ active, onSelect }) => {
 
     gsap.killTweensOf(el);
 
-    gsap.timeline()
+    gsap
+      .timeline()
       .to(el, {
         scale: 1.18,
         duration: 0.15,
@@ -244,7 +239,7 @@ const Navbar = ({ active, onSelect }) => {
       ref={navRef}
       onMouseEnter={handleNavMouseEnter}
       onMouseLeave={handleNavMouseLeave}
-      className="fixed left-1/2 top-4 z-50 flex h-[64px] w-[94vw] max-w-[575px] -translate-x-1/2 items-center justify-between gap-1 rounded-full bg-[#505050] px-2 sm:top-6 sm:h-[86px] sm:w-[min(92vw,575px)] sm:justify-center sm:gap-5 sm:px-5"
+      className="fixed left-1/2 top-4 z-50 flex h-[64px] w-[94vw] max-w-[575px] -translate-x-1/2 items-center justify-between gap-1 rounded-full border-[3px] border-[#171717] bg-[#f7f7f5] px-2 shadow-[5px_6px_0_#171717] sm:top-6 sm:h-[86px] sm:w-[min(92vw,575px)] sm:justify-center sm:gap-5 sm:px-5"
       style={{
         paddingTop: "env(safe-area-inset-top, 0px)",
       }}
@@ -263,20 +258,25 @@ const Navbar = ({ active, onSelect }) => {
             onMouseLeave={() => handleMouseLeave(index)}
             aria-label={item.name}
             aria-current={isActive ? "page" : undefined}
-            className="nav-item relative flex h-[46px] w-[46px] shrink-0 cursor-pointer items-center justify-center rounded-full border-[2px] border-[#C7C7C7] bg-[#575757] p-0 outline-none sm:h-[70px] sm:w-[70px] sm:border-[3px]"
+            className={`nav-item relative flex h-[46px] w-[46px] shrink-0 cursor-pointer items-center justify-center rounded-full border-[2px] border-[#171717] p-0 outline-none transition-colors duration-200 sm:h-[70px] sm:w-[70px] sm:border-[3px] ${
+              isActive
+                ? "bg-[#fff21c] shadow-[3px_4px_0_#171717]"
+                : "bg-white hover:bg-[#5f94ff]"
+            }`}
           >
             <span
               className={`absolute inset-0 rounded-full transition-all duration-300 ${
                 isActive
-                  ? "scale-[0.82] bg-[#FF5252] opacity-[0.12]"
-                  : "scale-100 bg-transparent opacity-0"
+                  ? "scale-[0.72] bg-[#ff4545] opacity-20"
+                  : "scale-0 bg-transparent opacity-0"
               }`}
             />
 
             <Icon
               className={`pointer-events-none relative z-10 h-[20px] w-[20px] select-none transition-colors duration-300 sm:h-[34px] sm:w-[34px] ${
-                isActive ? "text-[#FF5252]" : "text-[#fdfafa]"
+                isActive ? "text-[#171717]" : "text-[#171717]"
               }`}
+              strokeWidth={2.5}
             />
           </button>
         );

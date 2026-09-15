@@ -1,24 +1,63 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
 import { projects } from "../data/ProjectData";
 import ProjectCard from "../components/ProjectCard";
 
-const Project = () => {
+const Project = ({ direction }) => {
   const [openId, setOpenId] = useState(null);
+  const cardRefs = useRef([]);
 
   const handleToggle = (id) => {
     setOpenId((current) => (current === id ? null : id));
   };
 
+  useEffect(() => {
+    const dir = direction === 1 ? 1 : -1;
+    const cards = cardRefs.current.filter(Boolean);
+
+    if (!cards.length) return;
+
+    gsap.killTweensOf(cards);
+
+    gsap.set(cards, {
+      x: `${dir * 100}vw`,
+    });
+
+    const tl = gsap.timeline({
+      defaults: {
+        ease: "power3.out",
+      },
+    });
+
+    tl.to(cards, {
+      x: "0vw",
+      duration: 1,
+      stagger: 0.12,
+    });
+
+    return () => {
+      tl.kill();
+    };
+  }, [direction]);
+
   return (
-    <div className="w-full max-w-8xl mx-auto flex flex-col gap-1 sm:gap-2 p-5 sm:p-10">
-      {projects.map((project) => (
-        <ProjectCard
-          key={project.id}
-          project={project}
-          isOpen={openId === project.id}
-          onToggle={() => handleToggle(project.id)}
-        />
-      ))}
+    <div className="h-screen w-full overflow-hidden">
+      <div className="mx-auto flex h-full w-full max-w-8xl flex-col gap-4 overflow-y-auto p-5 sm:gap-5 sm:p-6">
+        {projects.map((project, index) => (
+          <div
+            key={project.id}
+            ref={(el) => {
+              cardRefs.current[index] = el;
+            }}
+          >
+            <ProjectCard
+              project={project}
+              isOpen={openId === project.id}
+              onToggle={() => handleToggle(project.id)}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

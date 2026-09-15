@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { X } from "lucide-react";
+import { ArrowUpRight, X } from "lucide-react";
 
 import {
   SiReact,
@@ -9,13 +9,8 @@ import {
   SiTypescript,
   SiFigma,
   SiMongodb,
-  SiGithub,
   SiVite,
 } from "@icons-pack/react-simple-icons";
-
-// =========================================================
-// Map nama tech -> logo asli
-// =========================================================
 
 const TECH_ICON_MAP = {
   React: SiReact,
@@ -25,101 +20,74 @@ const TECH_ICON_MAP = {
   TypeScript: SiTypescript,
   Figma: SiFigma,
   MongoDB: SiMongodb,
-  GitHub: SiGithub,
   Vite: SiVite,
 };
 
+const prefersReducedMotion = () =>
+  typeof window !== "undefined" &&
+  window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+
 const ProjectCard = ({ project, isOpen, onToggle }) => {
   const cardRef = useRef(null);
+  const contentRef = useRef(null);
+
+  const [hovering, setHovering] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
-  // =========================================================
-  // SCALE
-  // CLOSED = 0.9
-  // HOVER  = 1.015
-  // OPEN   = 1
-  // =========================================================
+  const expanded = isOpen || hovering;
+
+  const techStack = Array.isArray(project.techStack)
+    ? project.techStack
+    : [];
+
+  const images = Array.isArray(project.images)
+    ? project.images
+    : [];
+
+  const imageCount = Math.min(
+    Math.max(project.imageCount || images.length || 1, 1),
+    images.length || 1
+  );
 
   useEffect(() => {
-    if (!cardRef.current) return;
+    const el = contentRef.current;
+    if (!el) return;
 
-    gsap.killTweensOf(cardRef.current);
+    if (expanded) {
+      el.style.height = `${el.scrollHeight}px`;
+      el.style.opacity = "1";
 
-    gsap.to(cardRef.current, {
-      scale: isOpen ? 1 : 0.95,
-      duration: 0.5,
-      ease: "power2.out",
+      const handleTransitionEnd = () => {
+        if (expanded) el.style.height = "auto";
+      };
+
+      el.addEventListener("transitionend", handleTransitionEnd);
+      return () => el.removeEventListener("transitionend", handleTransitionEnd);
+    }
+
+    // If height was previously "auto", switch to the current pixel height
+    // before collapsing so the CSS transition can animate correctly.
+    el.style.height = `${el.scrollHeight}px`;
+    requestAnimationFrame(() => {
+      el.style.height = "0px";
+      el.style.opacity = "0";
     });
-
-    return () => {
-      if (cardRef.current) {
-        gsap.killTweensOf(cardRef.current);
-      }
-    };
-  }, [isOpen]);
-
-  // =========================================================
-  // HOVER MASUK
-  // =========================================================
+  }, [expanded]);
 
   const handleMouseEnter = () => {
-    if (!cardRef.current) return;
-
-    gsap.killTweensOf(cardRef.current);
-
-    gsap.to(cardRef.current, {
-      scale: isOpen ? 1 : 1.02,
-      duration: 0.3,
-      ease: "back.out(1.7)",
-    });
+    setHovering(true);
   };
-
-  // =========================================================
-  // HOVER KELUAR
-  // OPEN  -> tetap 1
-  // CLOSED -> kembali 0.9
-  // =========================================================
 
   const handleMouseLeave = () => {
-    if (!cardRef.current) return;
-
-    gsap.killTweensOf(cardRef.current);
-
-    gsap.to(cardRef.current, {
-      scale: isOpen ? 1 : 0.95,
-      duration: 0.25,
-      ease: "power2.out",
-    });
+    if (!isOpen) {
+      setHovering(false);
+    }
   };
-
-  // =========================================================
-  // CLICK
-  // =========================================================
 
   const handleClick = () => {
-    if (!cardRef.current) return;
-
-    gsap.killTweensOf(cardRef.current);
-
-    gsap
-      .timeline({
-        onComplete: onToggle,
-      })
-      .to(cardRef.current, {
-        scale: 0.8,
-        duration: 0.1,
-        ease: "power2.in",
-      })
-      .to(cardRef.current, {
-        scale: 1,
-        duration: 0.15,
-        ease: "power2.out",
-      });
+    onToggle?.();
+    setHovering(false);
   };
-
-  // =========================================================
-  // KEYBOARD
-  // =========================================================
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -128,339 +96,194 @@ const ProjectCard = ({ project, isOpen, onToggle }) => {
     }
   };
 
-  // =========================================================
-  // IMAGE
-  // =========================================================
-
-  const handleImageClick = (e, index) => {
+  const openLightbox = (e, index) => {
     e.stopPropagation();
+
+    if (!images[index]) return;
+
     setSelectedImage(index);
   };
 
   const closeLightbox = (e) => {
-    e.stopPropagation();
+    e?.stopPropagation();
     setSelectedImage(null);
   };
 
   return (
     <>
-      {/* =====================================================
-          CARD
-      ===================================================== */}
+      <div className="relative w-full">
+        {/* OFFSET OUTLINE */}
+        <div className="absolute inset-0 translate-x-1.5 translate-y-1.5 rounded-[18px] border-[3px] border-[#171717] bg-[#2c5096]" />
 
-      <div
-        ref={cardRef}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={handleClick}
-        role="button"
-        tabIndex={0}
-        onKeyDown={handleKeyDown}
-        className="
-          rounded-3xl
-          cursor-pointer
-          select-none
-          outline-none
-          shadow-lg
-          shadow-black/10
-          focus-visible:ring-4
-          focus-visible:ring-offset-2
-          focus-visible:ring-black/30
-        "
-        style={{
-          backgroundColor: project.color,
-        }}
-      >
-        {/* =================================================
-            HEADER
-            Selalu kelihatan
-        ================================================= */}
-
-        <div className="px-7 sm:px-10 py-6 sm:py-8">
-          <h3
-            className="
-            dela-gothic
-              text-white
-              font-extrabold
-              tracking-tight
-              text-2xl
-              sm:text-4xl
-              leading-none
-            "
-          >
-            {project.name}
-          </h3>
-        </div>
-
-        {/* =================================================
-            DETAIL
-            CLOSED = tidak kelihatan
-            OPEN   = layout 2 kolom
-        ================================================= */}
-
+        {/* CARD */}
         <div
-          className="
-            grid
-            transition-[grid-template-rows]
-            duration-300
-            ease-out
-          "
-          style={{
-            gridTemplateRows: isOpen ? "1fr" : "0fr",
-          }}
+          ref={cardRef}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          onClick={handleClick}
+          onKeyDown={handleKeyDown}
+          role="button"
+          tabIndex={0}
+          aria-expanded={expanded}
+          className="relative w-full cursor-pointer overflow-hidden rounded-[18px] border-[3px] border-[#171717] bg-white outline-none transition-[box-shadow] duration-300 hover:shadow-[3px_3px_0_#171717] focus-visible:ring-4 focus-visible:ring-[#5f94ff]"
         >
-          <div className="overflow-hidden">
-            <div className="px-7 sm:px-10 pb-7 sm:pb-6">
+          {/* HEADER */}
+          <div className="flex items-center justify-between gap-6 px-5 py-5 sm:px-7 sm:py-6">
+            <div className="min-w-0">
+              <h3 className="dela-gothic truncate text-2xl font-black leading-none tracking-tight sm:text-3xl lg:text-4xl">
+                {project.name}
+              </h3>
+            </div>
 
-              {/* =========================================
-                  LAYOUT OPEN
+            {/* ARROW */}
+            <div
+              className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[#171717] transition-all duration-300 sm:h-11 sm:w-11 ${
+                expanded ? "rotate-45 bg-[#f55d5d]" : "bg-[#fff21c]"
+              }`}
+            >
+              <ArrowUpRight size={19} strokeWidth={2.5} />
+            </div>
+          </div>
 
-                  KIRI  = description + tech
-                  KANAN = gambar
-              ========================================= */}
+          {/* TECH STACK */}
+          {techStack.length > 0 && (
+            <div className="px-5 pb-5 sm:px-7 sm:pb-6">
+              <div className="flex flex-wrap gap-2">
+                {techStack.map((tech, index) => {
+                  const Icon = TECH_ICON_MAP[tech.icon];
 
-              <div
-                className="
-                  grid
-                  grid-cols-1
-                  lg:grid-cols-2
-                  gap-6
-                  lg:gap-10
-                  items-end
-                "
-              >
-                {/* =====================================
-                    KIRI
-                ===================================== */}
-
-                <div className="flex flex-col gap-6">
-
-                  {/* DESCRIPTION */}
-
-                  <p
-                    className="
-                      text-white/90
-                      text-base
-                      sm:text-xl
-                      max-w-2xl
-                    "
-                  >
-                    {project.description}
-                  </p>
-
-                  {/* TECH STACK */}
-
-                  {project.techStack?.length > 0 && (
+                  return (
                     <div
-                      className="
-                        flex
-                        flex-wrap
-                        items-center
-                        gap-3
-                        sm:gap-4
-                      "
+                      key={`${tech.name}-${index}`}
+                      className="flex items-center gap-1.5 rounded-full border border-[#171717]/20 bg-white px-2.5 py-1.5 text-neutral-700 transition-colors duration-200 hover:border-[#171717] hover:bg-[#fff21c]"
                     >
-                      {project.techStack.map((tech) => {
-                        const Icon = TECH_ICON_MAP[tech.icon];
+                      {Icon && <Icon size={13} />}
 
-                        return (
-                          <div
-                            key={tech.name}
-                            title={tech.name}
-                            className="
-                              flex
-                              items-center
-                              gap-2
-                              bg-white/90
-                              rounded-full
-                              pl-2
-                              pr-3.5
-                              py-1.5
-                              sm:pl-2.5
-                              sm:pr-4
-                              sm:py-2
-                              shadow-md
-                              shadow-black/15
-                            "
-                          >
-                            {Icon && (
-                              <Icon
-                                size={20}
-                                className="
-                                  shrink-0
-                                  sm:!w-[22px]
-                                  sm:!h-[22px]
-                                "
-                              />
-                            )}
+                      <span className="text-[9px] font-bold uppercase tracking-wide">
+                        {tech.name}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
 
-                            <span
-                              className="
-                                text-gray-700
-                                text-xs
-                                sm:text-sm
-                                font-medium
-                              "
-                            >
-                              {tech.name}
-                            </span>
-                          </div>
-                        );
-                      })}
+          {/* EXPANDED */}
+          <div
+            ref={contentRef}
+            className="overflow-hidden"
+            style={{
+              height: 0,
+              opacity: 0,
+              transition: "height 0.35s ease, opacity 0.25s ease",
+            }}
+          >
+            <div className="border-t border-[#171717] px-5 py-5 sm:px-7 sm:py-7">
+              <div className="grid grid-cols-1 gap-7 md:grid-cols-[1fr_42%] md:gap-10">
+                {/* DESCRIPTION */}
+                <div className="flex flex-col justify-between">
+                  <div>
+                    <p className="mb-3 text-[9px] font-bold uppercase tracking-[0.2em] text-neutral-900">
+                      ABOUT
+                    </p>
+
+                    <p className="max-w-xl text-sm leading-7 sm:text-base">
+                      {project.description || "No description available."}
+                    </p>
+                  </div>
+
+                  {/* LINKS */}
+                  {(project.github || project.demo) && (
+                    <div className="mt-7 flex flex-wrap gap-2">
+                      {project.github && (
+                        <a
+                          href={project.github}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-2 rounded-full border-2 border-[#171717] bg-[#171717] px-4 py-2 text-[10px] font-black uppercase tracking-wide text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[2px_2px_0_#2c5096]"
+                        >
+                          GitHub
+                          <ArrowUpRight
+                            size={13}
+                            strokeWidth={3}
+                          />
+                        </a>
+                      )}
+
+                      {project.demo && (
+                        <a
+                          href={project.demo}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          className="inline-flex items-center gap-2 rounded-full border-2 border-[#171717] bg-[#fff21c] px-4 py-2 text-[10px] font-black uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[2px_2px_0_#171717]"
+                        >
+                          Live Demo
+                          <ArrowUpRight
+                            size={13}
+                            strokeWidth={3}
+                          />
+                        </a>
+                      )}
                     </div>
                   )}
                 </div>
 
-                {/* =====================================
-                    KANAN — GAMBAR
-                ===================================== */}
-
-                <div
-                  className="
-                    grid
-                    grid-cols-2
-                    gap-4
-                    sm:gap-6
-                  "
+                {/* IMAGE */}
+                <button
+                  type="button"
+                  onClick={(e) => openLightbox(e, 0)}
+                  className="group relative aspect-video w-full overflow-hidden rounded-xl border-2 border-[#171717] bg-white outline-none focus-visible:ring-4 focus-visible:ring-[#5f94ff]"
                 >
-                  {Array.from({
-                    length: Math.min(2, project.imageCount),
-                  }).map((_, i) => (
+                  {images[0] ? (
+                    <img
+                      src={images[0]}
+                      alt={`${project.name} preview`}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      onError={(e) => {
+                        e.currentTarget.style.display = "none";
+                      }}
+                    />
+                  ) : (
+                    <div className="flex h-full items-center justify-center bg-[#fff21c] text-xs font-black uppercase">
+                      Preview
+                    </div>
+                  )}
+
+                  <div className="absolute bottom-3 right-3 rounded-full border border-[#171717] bg-white px-3 py-1.5 text-[9px] font-black uppercase opacity-0 transition-opacity duration-200 group-hover:opacity-100">
+                    Open
+                  </div>
+                </button>
+              </div>
+
+              {/* GALLERY */}
+              {imageCount > 1 && (
+                <div className="mt-6 flex items-center gap-2">
+                  <span className="mr-1 text-[9px] font-bold uppercase tracking-[0.15em] text-neutral-400">
+                    Gallery
+                  </span>
+
+                  {Array.from({ length: imageCount }).map((_, index) => (
                     <button
-                      key={i}
+                      key={index}
                       type="button"
-                      onClick={(e) => handleImageClick(e, i)}
-                      className="
-                        group
-                        relative
-                        w-full
-                        aspect-video
-                        bg-white
-                        rounded-2xl
-                        overflow-hidden
-                        outline-none
-                        shadow-md
-                        shadow-black/15
-                        focus-visible:ring-4
-                        focus-visible:ring-white/50
-                      "
-                    >
-                      {/* Placeholder gambar */}
-
-                      <div
-                        className="
-                          absolute
-                          inset-0
-                          flex
-                          items-center
-                          justify-center
-                          text-gray-300
-                          text-sm
-                          sm:text-base
-                          font-medium
-                        "
-                      >
-                        Gambar {i + 1}
-                      </div>
-
-                      {/* Hover overlay */}
-
-                      <div
-                        className="
-                          absolute
-                          inset-0
-                          bg-black/0
-                          group-hover:bg-black/10
-                          transition-colors
-                        "
-                      />
-                    </button>
+                      aria-label={`Lihat gambar ${index + 1}`}
+                      onClick={(e) => openLightbox(e, index)}
+                      className={`h-2.5 w-2.5 rounded-full border border-[#171717] transition-transform duration-200 hover:scale-125 ${
+                        index === 0
+                          ? "bg-[#171717]"
+                          : "bg-white"
+                      }`}
+                    />
                   ))}
                 </div>
-              </div>
+              )}
             </div>
           </div>
         </div>
       </div>
-
-      {/* =====================================================
-          LIGHTBOX
-      ===================================================== */}
-
-      {selectedImage !== null && (
-        <div
-          onClick={closeLightbox}
-          className="
-            fixed
-            inset-0
-            z-[60]
-            bg-black/80
-            backdrop-blur-sm
-            flex
-            items-center
-            justify-center
-            p-4
-            sm:p-10
-          "
-        >
-          {/* CLOSE BUTTON */}
-
-          <button
-            type="button"
-            onClick={closeLightbox}
-            aria-label="Tutup"
-            className="
-              absolute
-              top-5
-              right-5
-              sm:top-8
-              sm:right-8
-              w-11
-              h-11
-              sm:w-12
-              sm:h-12
-              rounded-full
-              bg-white/10
-              hover:bg-white/20
-              flex
-              items-center
-              justify-center
-              text-white
-              transition-colors
-            "
-          >
-            <X className="w-6 h-6" />
-          </button>
-
-          {/* IMAGE */}
-
-          <div
-            onClick={(e) => e.stopPropagation()}
-            className="
-              w-full
-              max-w-4xl
-              aspect-video
-              bg-white
-              rounded-2xl
-              flex
-              items-center
-              justify-center
-              shadow-2xl
-            "
-          >
-            <span
-              className="
-                text-gray-400
-                text-lg
-                sm:text-2xl
-                font-medium
-              "
-            >
-              Gambar {selectedImage + 1} — {project.name}
-            </span>
-          </div>
-        </div>
-      )}
     </>
   );
 };

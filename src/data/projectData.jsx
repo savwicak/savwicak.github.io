@@ -1,68 +1,58 @@
 export const projects = [
   {
-    id: "proj-1",
-    name: "projectname",
-    color: "#5D8DFB",
+    id: "project-01",
+    name: "Portfolio Website",
     description:
-      "Website about bla bla bla, dashboard sederhana buat manage konten.",
-    imageCount: 2,
-
-    demo: "https://example.com",
-    github: "https://github.com/username/projectname",
-
+      "Personal portfolio website untuk menampilkan project, pengalaman, dan berbagai karya yang pernah dibuat.",
+    images: [
+      "/images/image3.jpg",
+      "/images/image.png",
+      "/images/image2.jpg",
+    ],
+    imageCount: 3,
+    github: "https://github.com/username/portfolio",
+    demo: "https://portfolio.vercel.app",
     techStack: [
       { name: "React", icon: "React" },
       { name: "Tailwind CSS", icon: "Tailwind" },
-      { name: "Node.js", icon: "Node" },
+      { name: "Vite", icon: "Vite" },
     ],
   },
 
   {
-    id: "proj-2",
-    name: "projectname",
-    color: "#FF5252",
+    id: "project-02",
+    name: "Dashboard",
     description:
-      "Website about bla bla bla, landing page produk dengan animasi ringan.",
-    imageCount: 4,
+      "Dashboard untuk mengelola data dengan tampilan sederhana dan responsive.",
+    images: [
+      "/images/image2.jpg",
+      "/images/image.png",
+    ],
+    imageCount: 2,
+    github: "https://github.com/username/dashboard",
+    demo: "",
+    techStack: [
+      { name: "React", icon: "React" },
+      { name: "Node.js", icon: "Node" },
+      { name: "MongoDB", icon: "MongoDB" },
+    ],
+  },
 
-    demo: "https://example.com",
-
+  {
+    id: "project-03",
+    name: "Landing Page",
+    description:
+      "Landing page modern dengan fokus pada typography, responsive layout, dan visual interaction.",
+    images: [
+      "/images/image.png",
+    ],
+    imageCount: 1,
+    github: "https://github.com/username/landing-page",
+    demo: "https://landing-page.vercel.app",
     techStack: [
       { name: "Next.js", icon: "Next" },
       { name: "TypeScript", icon: "TypeScript" },
       { name: "Figma", icon: "Figma" },
-    ],
-  },
-
-  {
-    id: "proj-3",
-    name: "projectname",
-    color: "#5D8DFB",
-    description:
-      "Website about bla bla bla, portofolio pribadi dengan galeri karya.",
-    imageCount: 3,
-
-    github: "https://github.com/username/projectname",
-
-    techStack: [
-      { name: "React", icon: "React" },
-      { name: "MongoDB", icon: "MongoDB" },
-      { name: "GitHub", icon: "GitHub" },
-    ],
-  },
-
-  {
-    id: "proj-4",
-    name: "projectname",
-    color: "#FF8A80",
-    description:
-      "Website about bla bla bla, toko online skala kecil.",
-    imageCount: 2,
-
-    techStack: [
-      { name: "Vite", icon: "Vite" },
-      { name: "Tailwind CSS", icon: "Tailwind" },
-      { name: "CSS", icon: "CSS" },
     ],
   },
 ];

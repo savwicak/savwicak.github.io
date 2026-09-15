@@ -23,3 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 public/images/profile.jpg
+public/images/image.png
+public/images/image2.jpg
+public/images/image3.jpg
+src/pages/Photos.jsx
+src/pages/Profile.jsx
