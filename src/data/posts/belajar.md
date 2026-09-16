@@ -4,7 +4,6 @@ description: "Catatan singkat tentang konsep dasar React untuk pemula."
 date: "2026-09-08"
 category: "React"
 tags:
-  - React
   - JavaScript
   - Frontend
 ---

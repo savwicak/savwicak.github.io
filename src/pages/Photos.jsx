@@ -6,47 +6,29 @@ function Photos() {
   const [category, setCategory] = useState("ALL");
   const [selected, setSelected] = useState(null);
 
-  const filtered =
+  const filtered = (
     category === "ALL"
       ? photos
-      : photos.filter((photo) => photo.category === category);
+      : photos.filter((photo) => photo?.category === category)
+  ).filter(Boolean);
 
   return (
-    <div className="min-h-screen bg-[#f7f7f5] px-5 py-8 text-[#171717] sm:px-10 lg:px-14">
-      <div className="mx-auto max-w-7xl">
-        {/* HEADER */}
-        <header className="border-b-[3px] border-[#171717] pb-8">
-          <div className="mb-6 flex items-center justify-between">
-            <span className="text-xs font-black tracking-[0.2em]">
-              / VISUAL ARCHIVE
-            </span>
-
-            <span className="text-xs font-black">
-              {String(filtered.length).padStart(2, "0")} PHOTOS
-            </span>
-          </div>
-
-          <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-            <h1 className="text-[clamp(5rem,13vw,11rem)] font-black leading-[0.75] tracking-[-0.08em]">
-              PHOTOS<span className="text-[#5f94ff]">.</span>
-            </h1>
-
-            <p className="max-w-sm text-sm font-bold leading-relaxed text-black/60">
-              A collection of moments, places and things worth remembering.
-            </p>
-          </div>
-        </header>
+    <div
+      data-page-scroll
+      className="h-screen w-full overflow-y-auto overscroll-y-auto bg-[#f7f7f5] text-[#171717]"
+    >
+      <div className="mx-auto w-full max-w-[1500px] px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
 
         {/* FILTER */}
-        <div className="flex flex-wrap gap-2 border-b-[3px] border-[#171717] py-5">
+        <div className="flex flex-wrap items-center gap-2 border-b-[3px] border-[#171717] py-5">
           {photoCategories.map((item) => (
             <button
               key={item}
               onClick={() => setCategory(item)}
-              className={`rounded-full border-[2px] border-[#171717] px-4 py-2 text-xs font-black transition ${
+              className={`rounded-full border-2 border-[#171717] px-4 py-2 text-[10px] font-black tracking-wide transition-all duration-200 sm:px-5 sm:py-2.5 sm:text-[11px] ${
                 category === item
                   ? "bg-[#171717] text-white"
-                  : "bg-transparent hover:bg-[#ffef00]"
+                  : "bg-transparent hover:-translate-y-0.5 hover:bg-[#ffef00]"
               }`}
             >
               {item}
@@ -54,86 +36,101 @@ function Photos() {
           ))}
         </div>
 
-        {/* GALLERY */}
-        <main className="grid gap-5 py-8 sm:grid-cols-2 lg:grid-cols-3">
+        <main
+          className="photos-grid py-8"
+        >
           {filtered.map((photo, index) => (
             <article
               key={photo.id}
               onClick={() => setSelected(photo)}
-              className="group cursor-pointer"
+              className="group min-w-0 cursor-pointer"
             >
-              <div className="relative overflow-hidden rounded-[20px] border-[3px] border-[#171717] bg-white">
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-xl border-[3px] border-[#171717] bg-white">
                 <img
                   src={photo.image}
                   alt={photo.title}
-                  loading="lazy"
-                  className="aspect-[4/5] w-full object-cover transition duration-500 group-hover:scale-105"
+                  width="900"
+                  height="1050"
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                 />
 
-                <div className="absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full border-[2px] border-[#171717] bg-white opacity-0 transition-all duration-300 group-hover:opacity-100">
-                  <ArrowUpRight size={18} strokeWidth={3} />
+                <div className="absolute inset-0 flex items-end bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                  <div className="flex w-full items-end justify-between p-5">
+                    <div className="text-white">
+                      <p className="mb-1 text-[10px] font-black tracking-[0.2em] text-[#ffef00]">
+                        {photo.category}
+                      </p>
+
+                      <h2 className="text-xl font-black">
+                        {photo.title}
+                      </h2>
+                    </div>
+
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#ffef00] text-[#171717]">
+                      <ArrowUpRight size={19} strokeWidth={3} />
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div className="mt-3 flex items-start justify-between gap-4">
+              <div className="mt-3 flex items-center justify-between">
                 <div>
-                  <p className="mb-1 text-[10px] font-black tracking-[0.15em] text-[#5f94ff]">
+                  <p className="text-[10px] font-black tracking-[0.18em] text-[#5f94ff]">
                     {photo.category}
                   </p>
 
-                  <h2 className="text-lg font-black">{photo.title}</h2>
+                  <h2 className="text-lg font-black">
+                    {photo.title}
+                  </h2>
                 </div>
 
-                <span className="text-xs font-black text-black/40">
+                <span className="text-[10px] font-black text-black/30">
                   {String(index + 1).padStart(2, "0")}
                 </span>
               </div>
             </article>
           ))}
         </main>
-
-        {/* FOOTER */}
-        <footer className="border-t-[3px] border-[#171717] py-8">
-          <div className="flex flex-col justify-between gap-3 text-xs font-black sm:flex-row">
-            <span>/ END OF ARCHIVE</span>
-            <span>MORE COMING SOON.</span>
-          </div>
-        </footer>
       </div>
 
       {/* LIGHTBOX */}
       {selected && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-[#171717]/95 p-5"
+          className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-[#171717]/95 p-4 sm:p-8"
           onClick={() => setSelected(null)}
         >
+          {/* CLOSE */}
           <button
             onClick={() => setSelected(null)}
-            className="absolute right-5 top-5 flex h-11 w-11 items-center justify-center rounded-full border-[2px] border-[#171717] bg-[#ffef00]"
+            className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#171717] bg-[#ffef00] transition-transform duration-300 hover:rotate-90 sm:right-6 sm:top-6 sm:h-11 sm:w-11"
           >
-            <X size={20} strokeWidth={3} />
+            <X size={19} strokeWidth={3} />
           </button>
 
           <div
-            className="max-h-[90vh] max-w-5xl"
+            className="w-full max-w-5xl"
             onClick={(event) => event.stopPropagation()}
           >
             <img
               src={selected.image}
               alt={selected.title}
-              className="max-h-[80vh] w-auto rounded-[16px] border-[3px] border-white object-contain"
+              width="1400"
+              height="1750"
+              className="mx-auto max-h-[70vh] w-auto max-w-full rounded-xl border-[3px] border-white object-contain sm:max-h-[75vh]"
             />
 
-            <div className="mt-4 flex items-center justify-between text-white">
-              <div>
-                <p className="text-[10px] font-black tracking-[0.2em] text-[#5f94ff]">
+            <div className="mx-auto mt-4 flex max-w-5xl items-end justify-between gap-4 text-white sm:mt-5">
+              <div className="min-w-0">
+                <p className="mb-1 text-[9px] font-black tracking-[0.2em] text-[#5f94ff] sm:text-[10px]">
                   {selected.category}
                 </p>
 
-                <h2 className="text-xl font-black">{selected.title}</h2>
+                <h2 className="truncate text-xl font-black tracking-tight sm:text-2xl">
+                  {selected.title}
+                </h2>
               </div>
 
-              <span className="text-xs font-bold text-white/50">
+              <span className="hidden shrink-0 text-[10px] font-bold tracking-[0.15em] text-white/40 sm:block">
                 ESC TO CLOSE
               </span>
             </div>
