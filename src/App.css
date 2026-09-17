@@ -6,6 +6,7 @@ body,
   margin: 0;
   overflow: hidden;
   background-color: #f7f7f5;
+  cursor: url("public/cursor.png") 16 16, auto;
 }
 
 * {
