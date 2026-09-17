@@ -113,7 +113,7 @@ const ProjectCard = ({ project, isOpen, onToggle }) => {
     <>
       <div className="relative w-full">
         {/* OFFSET OUTLINE */}
-        <div className="absolute inset-0 translate-x-1.5 translate-y-1.5 rounded-[18px] border-[3px] border-[#171717] bg-[#2c5096]" />
+        <div className="absolute inset-0 translate-x-1.5 translate-y-1.5 rounded-[18px] border-[3px] border-[#171717] bg-[#5f94ff]" />
 
         {/* CARD */}
         <div
@@ -125,7 +125,7 @@ const ProjectCard = ({ project, isOpen, onToggle }) => {
           role="button"
           tabIndex={0}
           aria-expanded={expanded}
-          className="relative w-full cursor-pointer overflow-hidden rounded-[18px] border-[3px] border-[#171717] bg-white outline-none transition-[box-shadow] duration-300 hover:shadow-[3px_3px_0_#171717] focus-visible:ring-4 focus-visible:ring-[#5f94ff]"
+          className="relative w-full cursor-pointer overflow-hidden rounded-[18px] border-[3px] border-[#171717] bg-white outline-none transition-[box-shadow] duration-300 hover:shadow-[1px_1px_0_#4978d5] focus-visible:ring-4 focus-visible:ring-[#5f94ff]"
         >
           {/* HEADER */}
           <div className="flex items-center justify-between gap-6 px-5 py-5 sm:px-7 sm:py-6">

@@ -227,29 +227,21 @@ const Blog = ({ direction = 1 }) => {
 
   useEffect(() => {
     const container = postsRef.current;
-
     if (!container) return;
 
     const cards = container.querySelectorAll("[data-blog-card]");
-
     if (!cards.length) return;
 
     const ctx = gsap.context(() => {
-      gsap.killTweensOf(cards);
-
       gsap.fromTo(
         cards,
         {
-          y: 20,
-          opacity: 0,
-          scale: 0.97,
+          y: 1080,
         },
         {
           y: 0,
-          opacity: 1,
-          scale: 1,
-          duration: 0.4,
-          stagger: 0.045,
+          duration: 0.8,
+          stagger: 0.3,
           ease: "power3.out",
           clearProps: "transform,opacity",
         }
@@ -258,6 +250,7 @@ const Blog = ({ direction = 1 }) => {
 
     return () => ctx.revert();
   }, [search, activeCategory]);
+
 
   if (selectedBlog) {
     return (
