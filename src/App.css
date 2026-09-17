@@ -6,11 +6,22 @@ body,
   margin: 0;
   overflow: hidden;
   background-color: #f7f7f5;
-  cursor: url("public/cursor.png") 16 16, auto;
 }
 
 * {
   -webkit-tap-highlight-color: transparent;
+  cursor: url("/cursor.png") 3 3, auto;
+}
+
+button,
+a,
+[role="button"],
+input[type="button"],
+input[type="submit"],
+input[type="reset"],
+select,
+label {
+  cursor: url("/pointer.png") 8 8, pointer;
 }
 
 button {

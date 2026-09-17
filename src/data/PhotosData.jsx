@@ -3,7 +3,7 @@ export const photos = [
     id: 1,
     category: "LIFE",
     description: "Suasana sore yang tenang dengan cahaya matahari yang mulai turun.",
-    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?w=1400&q=85",
+    image: "/images/image3.jpg",
   },
   {
     id: 2,
@@ -15,7 +15,7 @@ export const photos = [
     id: 3,
     category: "LIFE",
     description: "Momen pagi yang sederhana dan tenang sebelum aktivitas dimulai.",
-    image: "https://images.unsplash.com/photo-1497250681960-ef046c08a56e?w=1400&q=85",
+    image: "/images/image.png",
   },
   {
     id: 4,

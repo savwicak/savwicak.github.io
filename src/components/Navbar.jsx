@@ -258,7 +258,7 @@ const Navbar = ({ active, onSelect }) => {
             onMouseLeave={() => handleMouseLeave(index)}
             aria-label={item.name}
             aria-current={isActive ? "page" : undefined}
-            className={`nav-item relative flex h-[46px] w-[46px] shrink-0 cursor-pointer items-center justify-center rounded-full border-[2px] border-[#171717] p-0 outline-none transition-colors duration-200 sm:h-[70px] sm:w-[70px] sm:border-[3px] ${
+            className={`nav-item relative flex h-[46px] w-[46px] shrink-0 items-center justify-center rounded-full border-[2px] border-[#171717] p-0 outline-none transition-colors duration-200 sm:h-[70px] sm:w-[70px] sm:border-[3px] ${
               isActive
                 ? "bg-[#fff21c] shadow-[3px_4px_0_#171717]"
                 : "bg-white hover:bg-[#5f94ff]"

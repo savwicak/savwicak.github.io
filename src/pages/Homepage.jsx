@@ -159,11 +159,15 @@ useEffect(() => {
 
         <section ref={imageRef} className="relative flex justify-center lg:justify-end">
           <div className="relative w-full max-w-[300px] sm:max-w-[370px] lg:max-w-[430px]">
-            <div className="absolute right-3 top-3 h-full w-full border-[3px] border-[#171717] bg-[#ff4545] sm:right-5 sm:top-5" />
-            <div className="relative z-20 overflow-hidden border-[3px] border-[#171717] bg-[#f0f0ed] shadow-[7px_8px_0_[#ff4545]">
-              <img src="/images/profile.jpg" alt="Savanna Wicaksono" className="aspect-[4/5] w-full object-cover object-center grayscale-[15%] transition-all duration-500" />
-            </div>
+            <div className="absolute right-3 top-3 h-full w-full rounded-2xl border-[3px] border-[#171717] bg-[#ff4545] sm:right-5 sm:top-5" />
 
+            <div className="relative z-20 overflow-hidden rounded-[2rem] border-[3px] border-[#171717] bg-[#f0f0ed] shadow-[7px_8px_0_[#5f94ff]">
+              <img
+                src="/images/profile.jpg"
+                alt="Savanna Wicaksono"
+                className="aspect-[4/5] w-full rounded-[1.8rem] object-cover object-center grayscale-[15%] transition-all duration-500"
+              />
+            </div>
           </div>
         </section>
       </div>

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+
 import { photos, photoCategories } from "../data/PhotosData";
 import PhotoCard from "../components/PhotoCard";
 import PhotoPreview from "../components/PhotoPreview";
@@ -14,7 +15,7 @@ function Photos() {
 
   useEffect(() => {
     const grid = gridRef.current;
-    if (!grid || typeof gsap === "undefined") return;
+    if (!grid) return;
 
     const cards = grid.querySelectorAll("[data-photo-card]");
     if (!cards.length) return;
@@ -23,17 +24,13 @@ function Photos() {
 
     gsap.fromTo(
       cards,
-      {
-        y: 70,
-        opacity: 0,
-        scale: 0.96,
-      },
+      { y: 50, opacity: 0, scale: 0.97 },
       {
         y: 0,
         opacity: 1,
         scale: 1,
-        duration: 0.65,
-        stagger: 0.1,
+        duration: 0.6,
+        stagger: 0.07,
         ease: "power3.out",
         clearProps: "transform,opacity",
       }
@@ -72,7 +69,7 @@ function Photos() {
   };
 
   return (
-    <div data-page-scroll className="h-screen w-full overflow-y-auto overscroll-y-auto bg-[#f7f7f5] text-[#171717]">
+    <div data-page-scroll className="h-screen w-full overflow-y-auto overscroll-y-contain bg-[#f7f7f5] text-[#171717]">
       <div className="mx-auto w-full max-w-[1700px] px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
         <div className="flex flex-wrap items-center gap-2 border-b-[3px] border-[#171717] pb-5">
           {photoCategories.map((item) => (
