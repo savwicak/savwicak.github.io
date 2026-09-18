@@ -1,9 +1,9 @@
 import { useRef } from "react";
+
 import { ArrowUpRight } from "lucide-react";
 
 const normalizeTags = (tags) => {
   if (Array.isArray(tags)) return tags.filter(Boolean);
-
   if (typeof tags === "string") {
     return tags
       .replace(/^\[|\]$/g, "")
@@ -11,17 +11,18 @@ const normalizeTags = (tags) => {
       .map((tag) => tag.trim().replace(/^["']|["']$/g, ""))
       .filter(Boolean);
   }
-
   return [];
 };
 
 const BlogCard = ({ blog, onClick }) => {
   const cardRef = useRef(null);
   const tags = normalizeTags(blog.tags);
+
   return (
     <article
       ref={cardRef}
       data-blog-card
+      onClick={onClick}
       className="group cursor-pointer rounded-2xl border-2 border-[#171717] px-6 py-7 transition-colors hover:bg-white"
     >
       <div className="flex items-center justify-between gap-6">
@@ -42,7 +43,10 @@ const BlogCard = ({ blog, onClick }) => {
             )}
 
             {tags.slice(0, 3).map((tag) => (
-              <span key={tag} className="text-[10px] font-bold uppercase tracking-wider text-neutral-400">
+              <span
+                key={tag}
+                className="text-[10px] font-bold uppercase tracking-wider text-neutral-400"
+              >
                 #{tag}
               </span>
             ))}
