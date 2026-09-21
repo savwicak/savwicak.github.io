@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+
 import ReactMarkdown from "react-markdown";
+
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 
 const normalizeTags = (tags) => {
@@ -32,7 +34,7 @@ const formatDate = (date) => {
 
 const cleanHeading = (text) => {
   return String(text)
-    .replace(/[*_`~]/g, "")
+    .replace(/[\*\_\`\~]/g, "")
     .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1")
     .replace(/<[^>]*>/g, "")
     .trim();
@@ -57,14 +59,11 @@ const getHeadings = (markdown) => {
   const usedIds = {};
 
   lines.forEach((line) => {
-    const match = line.match(/^\s{0,3}(#{2,3})\s+(.+?)\s*#*\s*$/);
+    const match = line.match(/^\s{0,3}(#{2,3})\s+(.+?)\s*$/);
 
     if (!match) return;
 
     const level = match[1].length;
-
-    if (level < 2 || level > 3) return;
-
     const title = cleanHeading(match[2]);
 
     if (!title) return;
@@ -97,72 +96,75 @@ const BlogPost = ({ blog, onBack }) => {
     return getHeadings(blog.content);
   }, [blog.content]);
 
-  const [activeHeading, setActiveHeading] = useState(headings[0]?.id || "");
+  const [activeHeading, setActiveHeading] = useState(
+    headings[0]?.id || ""
+  );
+
   const scrollRef = useRef(null);
 
   useEffect(() => {
-  if (!headings.length || !scrollRef.current) return;
+    if (!headings.length || !scrollRef.current) return;
 
-  const scrollContainer = scrollRef.current;
+    const scrollContainer = scrollRef.current;
 
-  const updateActiveHeading = () => {
-    let currentHeading = headings[0].id;
+    const updateActiveHeading = () => {
+      let currentHeading = headings[0].id;
 
-    for (const heading of headings) {
-      const element = document.getElementById(heading.id);
+      for (const heading of headings) {
+        const element = document.getElementById(heading.id);
 
-      if (!element) continue;
+        if (!element) continue;
 
-      const top =
-        element.getBoundingClientRect().top -
-        scrollContainer.getBoundingClientRect().top;
+        const top =
+          element.getBoundingClientRect().top -
+          scrollContainer.getBoundingClientRect().top;
 
-      if (top <= 150) {
-        currentHeading = heading.id;
+        if (top <= 150) {
+          currentHeading = heading.id;
+        }
       }
-    }
 
-    setActiveHeading(currentHeading);
-  };
+      setActiveHeading(currentHeading);
+    };
 
-  updateActiveHeading();
+    updateActiveHeading();
 
-  scrollContainer.addEventListener("scroll", updateActiveHeading, {
-    passive: true,
-  });
+    scrollContainer.addEventListener("scroll", updateActiveHeading, {
+      passive: true,
+    });
 
-  return () => {
-    scrollContainer.removeEventListener("scroll", updateActiveHeading);
-  };
-}, [headings]);
+    return () => {
+      scrollContainer.removeEventListener("scroll", updateActiveHeading);
+    };
+  }, [headings]);
 
   const goToHeading = (id) => {
-  const element = document.getElementById(id);
-  const scrollContainer = scrollRef.current;
+    const element = document.getElementById(id);
+    const scrollContainer = scrollRef.current;
 
-  if (!element || !scrollContainer) return;
+    if (!element || !scrollContainer) return;
 
-  const containerRect = scrollContainer.getBoundingClientRect();
-  const elementRect = element.getBoundingClientRect();
+    const containerRect = scrollContainer.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
 
-  const offset = 110;
+    const offset = window.innerWidth < 640 ? 80 : 110;
 
-  const top =
-    scrollContainer.scrollTop +
-    (elementRect.top - containerRect.top) -
-    offset;
+    const top =
+      scrollContainer.scrollTop +
+      (elementRect.top - containerRect.top) -
+      offset;
 
-  scrollContainer.scrollTo({
-    top,
-    behavior: "smooth",
-  });
+    scrollContainer.scrollTo({
+      top: Math.max(0, top),
+      behavior: "smooth",
+    });
 
-  setActiveHeading(id);
-};
+    setActiveHeading(id);
+  };
 
   const markdownComponents = {
     h1: ({ children }) => (
-      <h1 className="mb-6 mt-10 scroll-mt-28 text-4xl font-black leading-tight">
+      <h1 className="mb-6 mt-8 scroll-mt-24 text-[clamp(2rem,7vw,4rem)] font-black leading-[0.95] tracking-[-0.04em] sm:mt-10">
         {children}
       </h1>
     ),
@@ -174,7 +176,7 @@ const BlogPost = ({ blog, onBack }) => {
       return (
         <h2
           id={id}
-          className="mb-5 mt-12 scroll-mt-28 border-b-2 border-[#171717] pb-2 text-3xl font-black leading-tight"
+          className="mb-4 mt-10 scroll-mt-24 border-b-2 border-[#171717] pb-2 text-[clamp(1.5rem,5vw,2.25rem)] font-black leading-tight tracking-[-0.03em] sm:mb-5 sm:mt-12"
         >
           {children}
         </h2>
@@ -188,7 +190,7 @@ const BlogPost = ({ blog, onBack }) => {
       return (
         <h3
           id={id}
-          className="mb-4 mt-8 scroll-mt-28 text-2xl font-black"
+          className="mb-3 mt-8 scroll-mt-24 text-[clamp(1.25rem,4vw,1.75rem)] font-black leading-tight sm:mb-4 sm:mt-9"
         >
           {children}
         </h3>
@@ -196,19 +198,19 @@ const BlogPost = ({ blog, onBack }) => {
     },
 
     p: ({ children }) => (
-      <p className="mb-6 text-[15px] leading-8 text-neutral-700">
+      <p className="mb-5 text-[15px] leading-7 text-neutral-700 sm:mb-6 sm:text-[16px] sm:leading-8">
         {children}
       </p>
     ),
 
     ul: ({ children }) => (
-      <ul className="mb-7 ml-6 list-disc space-y-2 text-[15px] leading-7">
+      <ul className="mb-6 ml-5 list-disc space-y-2 text-[15px] leading-7 sm:mb-7 sm:ml-6 sm:text-[16px]">
         {children}
       </ul>
     ),
 
     ol: ({ children }) => (
-      <ol className="mb-7 ml-6 list-decimal space-y-2 text-[15px] leading-7">
+      <ol className="mb-6 ml-5 list-decimal space-y-2 text-[15px] leading-7 sm:mb-7 sm:ml-6 sm:text-[16px]">
         {children}
       </ol>
     ),
@@ -220,7 +222,7 @@ const BlogPost = ({ blog, onBack }) => {
     ),
 
     blockquote: ({ children }) => (
-      <blockquote className="my-8 border-l-[5px] border-[#171717] bg-[#ffef00] px-5 py-4 font-bold not-italic">
+      <blockquote className="my-7 border-l-4 border-[#171717] bg-[#ffef00] px-4 py-4 font-bold leading-7 sm:my-8 sm:border-l-[5px] sm:px-5">
         {children}
       </blockquote>
     ),
@@ -234,13 +236,13 @@ const BlogPost = ({ blog, onBack }) => {
     em: ({ children }) => <em>{children}</em>,
 
     code: ({ children }) => (
-      <code className="rounded bg-neutral-100 px-1.5 py-0.5 font-mono text-sm font-bold">
+      <code className="wrap-break-word rounded bg-neutral-100 px-1.5 py-0.5 font-mono text-[13px] font-bold sm:text-sm">
         {children}
       </code>
     ),
 
     pre: ({ children }) => (
-      <pre className="my-8 overflow-x-auto rounded-xl border-2 border-[#171717] bg-[#171717] p-5 text-sm leading-7 text-white shadow-[5px_5px_0_#ffef00]">
+      <pre className="my-7 max-w-full overflow-x-auto rounded-xl border-2 border-[#171717] bg-[#171717] p-4 text-[12px] leading-6 text-white shadow-[4px_4px_0_#ffef00] sm:my-8 sm:p-5 sm:text-sm sm:leading-7">
         {children}
       </pre>
     ),
@@ -250,7 +252,7 @@ const BlogPost = ({ blog, onBack }) => {
         href={href}
         target="_blank"
         rel="noreferrer"
-        className="font-black underline decoration-2 underline-offset-4"
+        className="wrap-break-word font-black underline decoration-2 underline-offset-4"
       >
         {children}
       </a>
@@ -260,67 +262,64 @@ const BlogPost = ({ blog, onBack }) => {
       <img
         src={src}
         alt={alt || ""}
-        className="my-8 w-full rounded-xl border-2 border-[#171717]"
+        className="my-7 h-auto max-w-full rounded-xl border-2 border-[#171717] sm:my-8"
       />
     ),
 
     hr: () => (
-      <hr className="my-10 border-t-2 border-[#171717]" />
+      <hr className="my-8 border-t-2 border-[#171717] sm:my-10" />
     ),
   };
 
-  
-
   return (
     <main
-        ref={scrollRef}
-        data-blog-scroll
-        className="h-screen w-full overflow-y-auto overflow-x-hidden bg-[#f7f7f5] text-[#171717]"
-      >
-            <div className="mx-auto w-full max-w-6xl px-5 py-8 sm:px-8 lg:px-10 lg:py-12">
-
+      ref={scrollRef}
+      data-blog-scroll
+      className="h-dvh w-full overflow-y-auto overflow-x-hidden bg-[#f7f7f5] text-[#171717]"
+    >
+      <div className="mx-auto w-full max-w-6xl px-4 py-6 pb-28 sm:px-6 sm:py-8 sm:pb-16 lg:px-10 lg:py-12">
         <button
           type="button"
           onClick={onBack}
-          className="group mb-10 flex items-center gap-2 text-xs font-black uppercase tracking-[0.15em]"
+          className="group mb-7 flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.15em] sm:mb-10 sm:text-xs"
         >
-          <span className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-[#171717] transition group-hover:-translate-x-1 group-hover:bg-[#ffef00]">
-            <ArrowLeft size={16} strokeWidth={2.5} />
+          <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border-2 border-[#171717] transition group-hover:-translate-x-1 group-hover:bg-[#ffef00] sm:h-9 sm:w-9">
+            <ArrowLeft size={15} strokeWidth={2.5} />
           </span>
 
           Back to blog
         </button>
 
-        <header className="relative overflow-hidden rounded-3xl border-[3px] border-[#171717] bg-white p-6 shadow-[8px_8px_0_#171717] sm:p-10 lg:p-14">
+        <header className="relative overflow-hidden rounded-2xl border-[3px] border-[#171717] bg-white p-5 shadow-[5px_5px_0_#171717] sm:rounded-3xl sm:p-8 sm:shadow-[7px_7px_0_#171717] lg:p-14 lg:shadow-[8px_8px_0_#171717]">
           <div className="relative z-10">
-            <div className="mb-7 flex flex-wrap items-center gap-3">
+            <div className="mb-5 flex flex-wrap items-center gap-2 sm:mb-7 sm:gap-3">
               {blog.category && (
-                <span className="rounded-full border-2 border-[#171717] bg-[#ffef00] px-3 py-1.5 text-[10px] font-black uppercase tracking-wider">
+                <span className="rounded-full border-2 border-[#171717] bg-[#ffef00] px-2.5 py-1 text-[9px] font-black uppercase tracking-wider sm:px-3 sm:py-1.5 sm:text-[10px]">
                   {blog.category}
                 </span>
               )}
 
-              <span className="text-xs font-bold text-neutral-400">
+              <span className="text-[10px] font-bold text-neutral-400 sm:text-xs">
                 {formatDate(blog.date)}
               </span>
             </div>
 
-            <h1 className="max-w-5xl text-[clamp(2.8rem,8vw,7rem)] font-black leading-[0.88] tracking-[-0.06em]">
+            <h1 className="max-w-5xl wrap-break-word text-[clamp(2.5rem,11vw,7rem)] font-black leading-[0.88] tracking-[-0.06em]">
               {blog.title}
             </h1>
 
             {blog.description && (
-              <p className="mt-7 max-w-2xl text-base font-medium leading-7 text-neutral-600 sm:text-lg">
+              <p className="mt-5 max-w-2xl text-sm font-medium leading-6 text-neutral-600 sm:mt-7 sm:text-base sm:leading-7 lg:text-lg">
                 {blog.description}
               </p>
             )}
 
             {tags.length > 0 && (
-              <div className="mt-8 flex flex-wrap gap-2">
+              <div className="mt-6 flex flex-wrap gap-1.5 sm:mt-8 sm:gap-2">
                 {tags.map((tag) => (
                   <span
                     key={tag}
-                    className="rounded-full bg-[#171717] px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider text-white"
+                    className="rounded-full bg-[#171717] px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-white sm:px-3 sm:py-1.5 sm:text-[10px]"
                   >
                     #{tag}
                   </span>
@@ -329,27 +328,26 @@ const BlogPost = ({ blog, onBack }) => {
             )}
           </div>
         </header>
-        
-        {headings.length > 0 && (
-          <div className="mt-10 lg:hidden">
-            <div className="rounded-2xl border-[3px] border-[#171717] bg-white p-5 shadow-[5px_5px_0_#171717]">
 
-              <div className="mb-5 text-[10px] font-black uppercase tracking-[0.18em]">
-                / ON THIS PAGE
+        {headings.length > 0 && (
+          <div className="mt-7 lg:hidden sm:mt-10">
+            <div className="rounded-2xl border-[3px] border-[#171717] bg-white p-4 shadow-[4px_4px_0_#171717] sm:p-5">
+              <div className="mb-4 text-[9px] font-black uppercase tracking-[0.18em] sm:mb-5 sm:text-[10px]">
+                ON THIS PAGE
               </div>
 
-              <nav className="space-y-1">
+              <nav className="max-h-64 space-y-1 overflow-y-auto pr-1">
                 {headings.map((heading) => (
                   <button
                     key={heading.id}
                     type="button"
                     onClick={() => goToHeading(heading.id)}
                     className={`block w-full text-left ${
-                      heading.level === 3 ? "pl-4" : ""
+                      heading.level === 3 ? "pl-3 sm:pl-4" : ""
                     }`}
                   >
                     <span
-                      className={`block border-l-2 py-2 pl-3 text-xs font-bold transition ${
+                      className={`block border-l-2 py-2 pl-3 text-[11px] font-bold leading-5 transition sm:text-xs ${
                         activeHeading === heading.id
                           ? "border-[#171717] text-[#171717]"
                           : "border-neutral-200 text-neutral-400"
@@ -360,14 +358,12 @@ const BlogPost = ({ blog, onBack }) => {
                   </button>
                 ))}
               </nav>
-
             </div>
           </div>
         )}
-        
-        <div className="mt-12 grid gap-10 lg:grid-cols-[1fr_240px]">
 
-          <article className="min-w-0 rounded-[22px] border-[3px] border-[#171717] bg-white p-6 shadow-[7px_7px_0_#5f94ff] sm:p-10 lg:p-12">
+        <div className="mt-8 grid gap-8 sm:mt-10 sm:gap-10 lg:grid-cols-[minmax(0,1fr)_240px]">
+          <article className="min-w-0 overflow-hidden rounded-[18px] border-[3px] border-[#171717] bg-white p-5 shadow-[5px_5px_0_#5f94ff] sm:rounded-[22px] sm:p-8 sm:shadow-[7px_7px_0_#5f94ff] lg:p-12">
             <div className="prose prose-neutral max-w-none">
               <ReactMarkdown components={markdownComponents}>
                 {blog.content}
@@ -377,9 +373,7 @@ const BlogPost = ({ blog, onBack }) => {
 
           <aside className="hidden lg:block">
             <div className="sticky top-8">
-
               <div className="rounded-2xl border-[3px] border-[#171717] bg-white p-5 shadow-[5px_5px_0_#171717]">
-
                 <div className="mb-5 flex items-center justify-between">
                   <span className="text-[10px] font-black uppercase tracking-[0.18em]">
                     ON THIS PAGE
@@ -441,7 +435,6 @@ const BlogPost = ({ blog, onBack }) => {
                   className="transition group-hover:rotate-12"
                 />
               </button>
-
             </div>
           </aside>
         </div>
