@@ -291,7 +291,7 @@ const BlogPost = ({ blog, onBack }) => {
           Back to blog
         </button>
 
-        <header className="relative overflow-hidden rounded-[24px] border-[3px] border-[#171717] bg-white p-6 shadow-[8px_8px_0_#171717] sm:p-10 lg:p-14">
+        <header className="relative overflow-hidden rounded-3xl border-[3px] border-[#171717] bg-white p-6 shadow-[8px_8px_0_#171717] sm:p-10 lg:p-14">
           <div className="relative z-10">
             <div className="mb-7 flex flex-wrap items-center gap-3">
               {blog.category && (

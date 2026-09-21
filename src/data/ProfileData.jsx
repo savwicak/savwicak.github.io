@@ -4,12 +4,14 @@ export const experiences = [
     year: "2024 — NOW",
     title: "Game Developer",
     description: "Creating interactive games and experiences with Godot.",
+    link: "https://github.com/username/game-project",
   },
   {
     id: "02",
     year: "2023 — 2024",
     title: "Mobile Developer",
     description: "Building mobile applications with Flutter and Firebase.",
+    link: "https://github.com/username/mobile-project",
   },
   {
     id: "03",
@@ -22,62 +24,90 @@ export const experiences = [
     year: "2022 — NOW",
     title: "Creative Developer",
     description: "Exploring modern interfaces, interaction, animation, and design.",
+    link: "https://github.com/username/creative-project",
   },
 ];
 
 export const skills = [
   {
     name: "React",
-    image: "https://docs.flutter.dev/assets/images/flutter-logo-sharing.png",
-  },
-  {
-    name: "Flutter",
-    image: "/assets/tech/flutter.png",
-  },
-  {
-    name: "Godot",
-    image: "/assets/tech/godot.png",
+    image: "/assets/tech/react.png",
+    category: "frontend",
   },
   {
     name: "JavaScript",
     image: "/assets/tech/javascript.png",
+    category: "frontend",
   },
   {
     name: "Tailwind CSS",
     image: "/assets/tech/tailwind.png",
+    category: "frontend",
+  },
+  {
+    name: "Flutter",
+    image: "https://docs.flutter.dev/assets/images/flutter-logo-sharing.png",
+    category: "frontend",
+  },
+  {
+    name: "Node.js",
+    image: "/assets/tech/node.png",
+    category: "backend",
   },
   {
     name: "Firebase",
     image: "/assets/tech/firebase.png",
+    category: "backend",
+  },
+  {
+    name: "MongoDB",
+    image: "/assets/tech/mongodb.png",
+    category: "backend",
+  },
+  {
+    name: "Godot",
+    image: "/assets/tech/godot.png",
+    category: "other",
   },
   {
     name: "Figma",
     image: "/assets/tech/figma.png",
+    category: "design",
   },
   {
     name: "GSAP",
     image: "/assets/tech/gsap.png",
+    category: "frontend",
   },
 ];
 
 export const certificates = [
   {
     id: 1,
-    title: "Certificate",
-    year: "2024",
-    image: "/assets/certificate-1.jpg",
+    title: "Frontend Development Certificate",
+    issuedBy: "Dicoding Indonesia",
+    issued: "2024",
+    expired: "No Expiration",
+    validFor: "Lifetime",
+    image: "images/image.png",
   },
   {
     id: 2,
-    title: "Achievement",
-    year: "2024",
-    image: "/assets/certificate-2.jpg",
+    title: "Mobile Development Certificate",
+    issuedBy: "Dicoding Indonesia",
+    issued: "2024",
+    expired: "No Expiration",
+    validFor: "Lifetime",
+    image: "images/image2.jpg",
   },
   {
     id: 3,
-    title: "Award",
-    year: "2023",
-    image: "/assets/certificate-3.jpg",
+    title: "Game Development Certificate",
+    issuedBy: "Google",
+    issued: "2023",
+    expired: "2026",
+    validFor: "3 Years",
+    image: "images/image3.jpg",
   },
 ];
 
