@@ -69,7 +69,7 @@ function Photos() {
   };
 
   return (
-    <div data-page-scroll className="h-screen w-full overflow-y-auto overscroll-y-contain bg-[#f7f7f5] text-[#171717]">
+    <div className="h-screen w-full overflow-y-auto overscroll-y-contain bg-[#f7f7f5] text-[#171717]">
       <div className="mx-auto w-full max-w-[1700px] px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
         <div className="flex flex-wrap items-center gap-2 border-b-[3px] border-[#171717] pb-5">
           {photoCategories.map((item) => (

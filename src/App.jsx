@@ -6,7 +6,6 @@ import Project from "./pages/Project";
 import Blog from "./pages/Blog";
 import Photos from "./pages/Photos";
 import Profile from "./pages/Profile";
-
 import "./App.css";
 
 const PAGES = [Homepage, Project, Blog, Photos, Profile];
@@ -22,6 +21,7 @@ function App() {
   const isDragging = useRef(false);
   const isHorizontalDrag = useRef(false);
   const isAnimating = useRef(false);
+
   const xTo = useRef(null);
   const rotationTo = useRef(null);
   const scaleTo = useRef(null);
@@ -68,7 +68,6 @@ function App() {
     }
 
     isAnimating.current = true;
-
     setDirection(dir);
 
     gsap.killTweensOf(page);
@@ -151,14 +150,13 @@ function App() {
   };
 
   const handlePointerDown = (event) => {
-    if (event.target.closest("[data-page-scroll]")) return;
-
     if (event.target.closest("button, a, input, textarea, select")) return;
 
     if (isAnimating.current) return;
 
     isDragging.current = true;
     isHorizontalDrag.current = false;
+
     dragStartX.current = event.clientX;
     dragStartY.current = event.clientY;
     dragX.current = 0;
@@ -314,6 +312,7 @@ function App() {
       </main>
 
       {/* DESKTOP */}
+
       <div className="hidden md:block">
         <button
           type="button"
