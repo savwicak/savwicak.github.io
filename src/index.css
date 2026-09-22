@@ -1,7 +1,9 @@
 @import "tailwindcss";
+@source "./**/*.{js,jsx}"; 
 
 *::-webkit-scrollbar {
   display: none;
+  scroll-behavior: smooth;
 }
 
 .dela-gothic {

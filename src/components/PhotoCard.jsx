@@ -7,8 +7,8 @@ function PhotoCard({ photo, index, layout, onClick }) {
 
   const aspectClasses = {
     wide: "aspect-[16/9]",
-    portrait: "aspect-[5/6]",
-    square: "aspect-square",
+    portrait: "aspect-[3/6]",
+    square: "aspect-[1/2]",
   };
 
   return (
@@ -23,6 +23,7 @@ function PhotoCard({ photo, index, layout, onClick }) {
         <img
           src={photo.image}
           alt=""
+          draggable={false}
           width="1200"
           height="900"
           loading={index < 4 ? "eager" : "lazy"}

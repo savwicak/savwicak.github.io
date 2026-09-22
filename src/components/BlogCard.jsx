@@ -25,21 +25,21 @@ const BlogCard = ({ blog, onClick }) => {
 
       <article
         onClick={onClick}
-        className="group relative cursor-pointer rounded-2xl border-2 border-[#171717] bg-white px-6 py-7 transition-colors hover:bg-white"
+        className="group relative cursor-pointer rounded-2xl border-2 border-[#171717] bg-white px-6 py-7 transition-all duration-300 ease-out hover:translate-x-2 hover:bg-white"
       >
         <div className="flex items-center justify-between gap-6">
           <div className="min-w-0 flex-1">
-            <span className="mb-1 hidden text-xs font-bold uppercase text-neutral-400 sm:block">
+            <span className="mb-1 hidden text-[12px] font-bold uppercase text-neutral-400 sm:block">
               {blog.date}
             </span>
 
-            <h2 className="mb-3 max-w-4xl text-2xl font-black leading-tight tracking-tight transition group-hover:underline sm:text-3xl">
+            <h2 className="mb-3 max-w-4xl text-3xl font-black leading-tight tracking-tight transition group-hover:underline sm:text-4xl">
               {blog.title}
             </h2>
 
             <div className="flex flex-wrap items-center gap-2">
               {blog.category && (
-                <span className="rounded-full border border-[#171717] bg-[#ffef00] px-2.5 py-1 text-[10px] font-black uppercase tracking-wider">
+                <span className="rounded-full border border-[#171717] bg-[#ffef00] px-3 py-2.5 text-[10px] font-black uppercase tracking-wider">
                   {blog.category}
                 </span>
               )}
@@ -47,7 +47,7 @@ const BlogCard = ({ blog, onClick }) => {
               {tags.slice(0, 3).map((tag) => (
                 <span
                   key={tag}
-                  className="text-[10px] font-bold uppercase tracking-wider text-neutral-400"
+                  className="text-[12px] font-bold uppercase tracking-wider text-neutral-600"
                 >
                   #{tag}
                 </span>

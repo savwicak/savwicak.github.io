@@ -52,40 +52,42 @@ function Photos() {
   const getLayout = (index) => {
     const layouts = [
       "wide",
-      "square",
-      "portrait",
-      "square",
-      "portrait",
       "wide",
-      "square",
-      "portrait",
       "wide",
-      "square",
-      "portrait",
-      "square",
+      "wide",
+      "wide",
     ];
 
     return layouts[index % layouts.length];
   };
 
   return (
-    <div className="h-screen w-full overflow-y-auto overscroll-y-contain bg-[#f7f7f5] text-[#171717]">
+    <div className="h-screen w-full overflow-y-auto overscroll-y-contain text-[#171717]">
       <div className="mx-auto w-full max-w-[1700px] px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
-        <div className="flex flex-wrap items-center gap-2 border-b-[3px] border-[#171717] pb-5">
-          {photoCategories.map((item) => (
-            <button
-              key={item}
-              type="button"
-              onClick={() => setCategory(item)}
-              className={`rounded-full border-2 border-[#171717] px-4 py-2 text-[10px] font-black tracking-wide transition-all duration-200 sm:px-5 sm:py-2.5 sm:text-[11px] ${
-                category === item
-                  ? "bg-[#171717] text-white"
-                  : "bg-transparent text-[#171717] hover:-translate-y-0.5 hover:bg-[#ffef00]"
-              }`}
-            >
-              {item}
-            </button>
-          ))}
+        <div className="border-b-[3px] border-[#171717] pb-5">
+          <div className="flex w-full gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible">
+            {photoCategories.map((item) => {
+              const active = category === item;
+
+              return (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => {
+                    setCategory(item);
+                    setSelected(null);
+                  }}
+                  className={`shrink-0 rounded-full border-2 border-[#171717] px-4 py-2 text-[10px] font-black tracking-wide transition-all duration-200 sm:px-5 sm:py-2.5 sm:text-[11px] ${
+                    active
+                      ? "bg-[#171717] text-white"
+                      : "bg-transparent text-[#171717] hover:-translate-y-0.5 hover:bg-[#ffef00]"
+                  }`}
+                >
+                  {item}
+                </button>
+              );
+            })}
+          </div>
         </div>
 
         <main

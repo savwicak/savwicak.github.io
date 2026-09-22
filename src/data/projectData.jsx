@@ -1,58 +1,56 @@
 export const projects = [
   {
-    id: "project-01",
-    name: "Portfolio Website",
+    name: "[Website] Detective Theme Website",
     description:
-      "Personal portfolio website untuk menampilkan project, pengalaman, dan berbagai karya yang pernah dibuat.",
+      "A website about detective offering their service as a top detective in the world, It's a front-end project using a fun concept",
     images: [
-      "/images/image3.jpg",
-      "/images/image.png",
-      "/images/image2.jpg",
+      "/images/project/detective.png",
     ],
-    imageCount: 3,
-    github: "https://github.com/username/portfolio",
-    demo: "https://portfolio.vercel.app",
-    techStack: [
-      { name: "React", icon: "React" },
-      { name: "Tailwind CSS", icon: "Tailwind" },
-      { name: "Vite", icon: "Vite" },
+    github: "https://github.com/savwicak/detective-case",
+    demo: "https://savwicak.github.io/detective-case/",
+    techStack: [,
+      { name: "Tailwind CSS", icon: "Tailwind" },,
     ],
   },
 
   {
     id: "project-02",
-    name: "Dashboard",
+    name: "[Mobile App] Attedance App for @HybridCorner",
     description:
-      "Dashboard untuk mengelola data dengan tampilan sederhana dan responsive.",
+      "[ In-Progress ] A mobile app that stores employee attendance data (check-in, check-out, sick leave, overtime), advance payments, pay dates, and payment details, using Firebase as the backend ",
     images: [
-      "/images/image2.jpg",
-      "/images/image.png",
+      "images/project/attendance.png",
     ],
-    imageCount: 2,
-    github: "https://github.com/username/dashboard",
-    demo: "",
     techStack: [
-      { name: "React", icon: "React" },
-      { name: "Node.js", icon: "Node" },
-      { name: "MongoDB", icon: "MongoDB" },
+      { name: "Flutter", icon: "Flutter" },
+      { name: "Firebase", icon: "Firebase" },
     ],
   },
 
   {
     id: "project-03",
-    name: "Landing Page",
+    name: "[Game] Vegetalien",
     description:
-      "Landing page modern dengan fokus pada typography, responsive layout, dan visual interaction.",
+      "Vegetalien is a survival game about aliens stranded on Earth who transform into vegetable-like creatures. The game offers the experience of collecting items, gaining stamina, and avoiding enemies in a colorful visual world with a little bit of dark elements.",
     images: [
-      "/images/image.png",
+      "/images/project/vegetalien.png",
     ],
-    imageCount: 1,
-    github: "https://github.com/username/landing-page",
-    demo: "https://landing-page.vercel.app",
+    demo: "https://savpixels.itch.io/vegetalien",
     techStack: [
-      { name: "Next.js", icon: "Next" },
-      { name: "TypeScript", icon: "TypeScript" },
-      { name: "Figma", icon: "Figma" },
+      { name: "Godot", icon: "Godot" },
+    ],
+  },
+  {
+    id: "project-04",
+    name: "[Game] Dungeon Dept Collector Cash or Duel",
+    description:
+      "A game about exploring dungeons as a debt collector. Fight monsters and collect unpaid debts through combat. Negotiate or use force to collect. Choose whether to accept payment or collect the debt by force. This is a team project submitted to @Gameseed2026. I served as the game programmer and gameplay animator.",
+    images: [
+      "/images/project/dungeon.jpg",
+    ],
+    demo: "https://al-bai.itch.io/dungeon-debt-collector-cash-or-duel",
+    techStack: [
+      { name: "Unity", icon: "Unity" },
     ],
   },
 ];

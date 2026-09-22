@@ -11,15 +11,19 @@ body,
 * {
   -webkit-tap-highlight-color: transparent;
   cursor: url("/cursor.png") 3 3, auto;
+  font-family: poppins;
 }
 
 button,
+svg,
 a,
+span,
+h2,
 [role="button"],
 input[type="button"],
 input[type="submit"],
 input[type="reset"],
 select,
 label {
-  cursor: url("/pointer.png") 8 8, pointer;
+  cursor: url("/pointer.png") 9 9, pointer;
 }

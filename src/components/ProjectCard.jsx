@@ -4,28 +4,26 @@ import { ArrowUpRight, X } from "lucide-react";
 import {
   SiReact,
   SiTailwindcss,
-  SiNodedotjs,
-  SiNextdotjs,
-  SiTypescript,
   SiFigma,
   SiMongodb,
   SiVite,
+  SiGodotengine,
+  SiFirebase,
+  SiFlutter,
+  SiUnity
 } from "@icons-pack/react-simple-icons";
 
 const TECH_ICON_MAP = {
   React: SiReact,
   Tailwind: SiTailwindcss,
-  Node: SiNodedotjs,
-  Next: SiNextdotjs,
-  TypeScript: SiTypescript,
   Figma: SiFigma,
   MongoDB: SiMongodb,
   Vite: SiVite,
+  Flutter: SiFlutter,
+  Godot: SiGodotengine,
+  Firebase: SiFirebase,
+  Unity: SiUnity
 };
-
-const prefersReducedMotion = () =>
-  typeof window !== "undefined" &&
-  window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
 
 const ProjectCard = ({ project, isOpen, onToggle }) => {
   const cardRef = useRef(null);
@@ -85,6 +83,20 @@ const ProjectCard = ({ project, isOpen, onToggle }) => {
   };
 
   const handleClick = () => {
+    if (cardRef.current) {
+      gsap.fromTo(
+        cardRef.current,
+        { scale: 1 },
+        {
+          y: 25,
+          duration: 0.1,
+          yoyo: true,
+          repeat: 1,
+          ease: "power1.out",
+        }
+      );
+    }
+
     onToggle?.();
     setHovering(false);
   };
@@ -128,9 +140,9 @@ const ProjectCard = ({ project, isOpen, onToggle }) => {
           className="relative w-full cursor-pointer overflow-hidden rounded-[18px] border-[3px] border-[#171717] bg-white outline-none transition-shadow duration-300 hover:shadow-[1px_1px_0_#4978d5] focus-visible:ring-4 focus-visible:ring-[#5f94ff]"
         >
           {/* HEADER */}
-          <div className="flex items-center justify-between gap-6 px-5 py-5 sm:px-7 sm:py-6">
+          <div className="flex items-center justify-between gap-6 px-5 py-7 sm:px-7 sm:py-8">
             <div className="min-w-0">
-              <h3 className="dela-gothic truncate text-2xl font-black leading-none tracking-tight sm:text-3xl lg:text-4xl">
+              <h3 className="dela-gothic text-2xl font-black leading-none sm:text-3xl lg:text-4xl">
                 {project.name}
               </h3>
             </div>
@@ -138,7 +150,7 @@ const ProjectCard = ({ project, isOpen, onToggle }) => {
             {/* ARROW */}
             <div
               className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-[#171717] transition-all duration-300 sm:h-11 sm:w-11 ${
-                expanded ? "rotate-45 bg-[#f55d5d]" : "bg-[#fff21c]"
+                expanded ? "rotate-45 bg-[#ff201c]" : "bg-[#fff21c]"
               }`}
             >
               <ArrowUpRight size={19} strokeWidth={2.5} />
@@ -155,11 +167,11 @@ const ProjectCard = ({ project, isOpen, onToggle }) => {
                   return (
                     <div
                       key={`${tech.name}-${index}`}
-                      className="flex items-center gap-1.5 rounded-full border border-[#171717]/20 bg-white px-2.5 py-1.5 text-neutral-700 transition-colors duration-200 hover:border-[#171717] hover:bg-[#fff21c]"
+                      className="flex items-center gap-1.5 rounded-full border-2 border-[#171717]/60 bg-[#ff4545] text-white px-2.5 py-1.5 transition-colors duration-200 hover:border-[#171717] hover:text-black hover:bg-[#fff21c]"
                     >
                       {Icon && <Icon size={13} />}
 
-                      <span className="text-[9px] font-bold uppercase tracking-wide">
+                      <span className="text-[12px] font-bold uppercase tracking-wide">
                         {tech.name}
                       </span>
                     </div>
@@ -202,7 +214,7 @@ const ProjectCard = ({ project, isOpen, onToggle }) => {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="inline-flex items-center gap-2 rounded-full border-2 border-[#171717] bg-[#171717] px-4 py-2 text-[10px] font-black uppercase tracking-wide text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[2px_2px_0_#2c5096]"
+                          className="inline-flex items-center gap-2 rounded-full border-2 border-[#171717] bg-[#171717] px-6 py-4 text-[16px] font-black uppercase tracking-wide text-white transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[2px_2px_0_#2c5096]"
                         >
                           GitHub
                           <ArrowUpRight
@@ -218,7 +230,7 @@ const ProjectCard = ({ project, isOpen, onToggle }) => {
                           target="_blank"
                           rel="noopener noreferrer"
                           onClick={(e) => e.stopPropagation()}
-                          className="inline-flex items-center gap-2 rounded-full border-2 border-[#171717] bg-[#fff21c] px-4 py-2 text-[10px] font-black uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[2px_2px_0_#171717]"
+                          className="inline-flex items-center gap-2 rounded-full border-2 border-[#171717] bg-[#fff21c] px-6 py-4 text-[16px] font-black uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[2px_2px_0_#171717]"
                         >
                           Live Demo
                           <ArrowUpRight
@@ -241,7 +253,7 @@ const ProjectCard = ({ project, isOpen, onToggle }) => {
                     <img
                       src={images[0]}
                       alt={`${project.name} preview`}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                      className="h-full w-full object-cover transition-transform duration-500"
                       onError={(e) => {
                         e.currentTarget.style.display = "none";
                       }}
@@ -251,35 +263,8 @@ const ProjectCard = ({ project, isOpen, onToggle }) => {
                       Preview
                     </div>
                   )}
-
-                  <div className="absolute bottom-3 right-3 rounded-full border border-[#171717] bg-white px-3 py-1.5 text-[9px] font-black uppercase opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                    Open
-                  </div>
                 </button>
               </div>
-
-              {/* GALLERY */}
-              {imageCount > 1 && (
-                <div className="mt-6 flex items-center gap-2">
-                  <span className="mr-1 text-[9px] font-bold uppercase tracking-[0.15em] text-neutral-400">
-                    Gallery
-                  </span>
-
-                  {Array.from({ length: imageCount }).map((_, index) => (
-                    <button
-                      key={index}
-                      type="button"
-                      aria-label={`Lihat gambar ${index + 1}`}
-                      onClick={(e) => openLightbox(e, index)}
-                      className={`h-2.5 w-2.5 rounded-full border border-[#171717] transition-transform duration-200 hover:scale-125 ${
-                        index === 0
-                          ? "bg-[#171717]"
-                          : "bg-white"
-                      }`}
-                    />
-                  ))}
-                </div>
-              )}
             </div>
           </div>
         </div>
