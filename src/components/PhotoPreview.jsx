@@ -1,0 +1,134 @@
+import { useEffect, useRef } from "react";
+
+import { X } from "lucide-react";
+
+function PhotoPreview({ photo, onClose }) {
+  const overlayRef = useRef(null);
+  const previewRef = useRef(null);
+
+  useEffect(() => {
+    if (!photo || typeof gsap === "undefined") return;
+
+    const overlay = overlayRef.current;
+    const preview = previewRef.current;
+
+    gsap.killTweensOf([overlay, preview]);
+
+    gsap.fromTo(
+      overlay,
+      { opacity: 0 },
+      {
+        opacity: 1,
+        duration: 0.3,
+        ease: "power2.out",
+      }
+    );
+
+    gsap.fromTo(
+      preview,
+      {
+        y: "110vh",
+        opacity: 0,
+        rotation: -4,
+      },
+      {
+        y: 0,
+        opacity: 1,
+        rotation: 0,
+        duration: 0.75,
+        ease: "back.out(1.35)",
+      }
+    );
+
+    return () => {
+      gsap.killTweensOf([overlay, preview]);
+    };
+  }, [photo]);
+
+  useEffect(() => {
+    if (!photo) return;
+
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") {
+        handleClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [photo]);
+
+  const handleClose = () => {
+    if (!photo || typeof gsap === "undefined") {
+      onClose();
+      return;
+    }
+
+    const overlay = overlayRef.current;
+    const preview = previewRef.current;
+
+    gsap.to(preview, {
+      y: "110vh",
+      opacity: 0,
+      rotation: 4,
+      duration: 0.45,
+      ease: "power3.in",
+    });
+
+    gsap.to(overlay, {
+      opacity: 0,
+      duration: 0.4,
+      ease: "power2.in",
+      onComplete: onClose,
+    });
+  };
+
+  if (!photo) return null;
+
+  return (
+    <div
+      ref={overlayRef}
+      className="fixed inset-0 z-100 flex items-center justify-center overflow-hidden bg-[#171717]/50 p-4 opacity-0 backdrop-blur-md sm:p-6"
+      onClick={handleClose}
+    >
+      <button
+        type="button"
+        onClick={handleClose}
+        aria-label="Close preview"
+        className="absolute right-4 top-4 z-30 flex h-10 w-10 items-center justify-center rounded-full border-2 border-[#171717] bg-[#ffef00] transition-transform duration-300 hover:rotate-90 hover:scale-110 sm:right-6 sm:top-6"
+      >
+        <X size={19} strokeWidth={3} />
+      </button>
+
+      <div
+        ref={previewRef}
+        className="relative w-fit max-w-[95vw] rounded-2xl border-[3px] border-[#171717] bg-white p-3 shadow-[12px_14px_0_#000] sm:p-4"
+        onClick={(event) => event.stopPropagation()}
+        onPointerDown={(event) => event.stopPropagation()}
+        onPointerMove={(event) => event.stopPropagation()}
+        onPointerUp={(event) => event.stopPropagation()}
+        onPointerCancel={(event) => event.stopPropagation()}
+      >
+        <img
+          src={photo.image}
+          alt={photo.title || ""}
+          draggable={false}
+          className="block h-auto max-h-[78vh] max-w-[88vw] w-auto rounded-lg object-contain"
+        />
+
+        {photo.description && (
+          <div className="px-2 pt-3 text-center sm:px-4">
+            <p className="text-[12px] font-medium leading-relaxed text-[#171717]/70 sm:text-[14px]">
+              {photo.description}
+            </p>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default PhotoPreview;
