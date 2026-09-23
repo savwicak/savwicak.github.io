@@ -274,9 +274,9 @@ useEffect(() => {
   return (
     <main
       ref={pageRef}
-      className="h-dvh overflow-hidden bg-[#f7f7f5] text-[#171717]"
+      className="h-screen w-full overflow-hidden text-[#171717]"
     >
-      <div className="mx-auto flex h-full w-full max-w-8xl flex-col px-4 pt-5 pb-24 sm:px-6 sm:pt-8 sm:pb-24 lg:px-10 lg:py-14">
+      <div className="mx-auto flex h-full w-full max-w-8xl flex-col px-4 pt-5 pb-20 sm:px-6 sm:pt-8 sm:pb-24 lg:px-10 lg:py-14">
         {/* MOBILE HEADER */}
         <div className="mb-4 shrink-0 lg:hidden">
           {/* MOBILE SEARCH */}
@@ -362,7 +362,7 @@ useEffect(() => {
         </div>
 
         {/* DESKTOP / MOBILE CONTENT */}
-        <div className="grid min-h-0 flex-1 gap-8 overflow-hidden lg:grid-cols-[250px_1fr]">
+        <div className="grid min-h-0 flex-1 gap-8 overflow-visible lg:grid-cols-[250px_1fr]">
           {/* DESKTOP SIDEBAR */}
           <aside className="hidden lg:block lg:self-start">
             <div className="mb-4">
@@ -457,14 +457,14 @@ useEffect(() => {
           </aside>
 
           {/* POSTS */}
-          <section className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+          <section className="flex min-h-0 min-w-0 flex-1 flex-col">
             <div
               ref={postsRef}
               data-page-scroll
-              className="min-h-0 flex-1 overflow-y-auto overscroll-contain pr-1 pb-8 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-300 sm:pr-2"
+              className="h-full min-h-0 flex-1 overflow-y-auto overscroll-contain touch-pan-y pr-1 pb-24 scrollbar-thin scrollbar-track-transparent scrollbar-thumb-neutral-300 sm:pr-2 sm:pb-8"
             >
               {filteredBlogs.length > 0 ? (
-                <div className="flex flex-col gap-3 pb-8 sm:gap-4 sm:pb-20">
+                <div className="flex flex-col gap-3 sm:gap-4">
                   {filteredBlogs.map((blog, index) => (
                     <BlogCard
                       key={blog.id}

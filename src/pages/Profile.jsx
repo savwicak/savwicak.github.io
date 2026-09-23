@@ -88,7 +88,7 @@ const Profile = ({ direction = 1 }) => {
 
   return (
     <>
-      <div className="h-dvh w-full overflow-hidden">
+      <div className="h-dvh w-full overflow-hidden pb-12">
         <div className="flex h-full w-full overflow-y-auto overflow-x-hidden p-4 scrollbar-hide sm:p-6">
           <div className="m-auto w-full max-w-337.5 py-5 lg:py-8">
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-[1fr_0.92fr] lg:gap-5">
@@ -107,29 +107,32 @@ const Profile = ({ direction = 1 }) => {
                 </div>
 
                 {/* EXPERIENCE */}
-                <section 
-                  ref={setRef(ORDER.experience)} 
-                  aria-label="Experience" 
+                <section
+                  ref={setRef(ORDER.experience)}
+                  aria-label="Experience"
                   className="relative"
                 >
                   <div className="absolute inset-0 translate-x-1.5 translate-y-1.5 rounded-2xl border-2 border-black bg-[#5f94ff]" />
 
-                  <div className="relative flex h-90 flex-col rounded-2xl border-2 border-black bg-white p-4 sm:h-94.5">
+                  <div className="relative flex h-[min(68vh,220px)] min-h-97.5 flex-col rounded-2xl border-2 border-black bg-white p-3 sm:h-94.5 sm:min-h-0 sm:p-4">
                     <div className="relative min-h-0 flex-1">
-                      <div className="absolute inset-0 flex flex-col gap-3 overflow-y-auto p-1 pb-2 pr-2 scrollbar-hide">
+                      <div className="absolute inset-0 flex flex-col gap-3 overflow-y-auto overscroll-contain p-1 pr-2 scrollbar-hide sm:pb-2">
                         {experiences.map((experience) => (
-                          <article key={experience.id} className="group relative shrink-0">
-                            <div className="relative overflow-hidden rounded-xl border-2 border-black bg-white px-5 py-4 transition-colors duration-200 hover:bg-white sm:px-6">
-                              <div className={experience.link ? "pr-20" : ""}>
-                                <span className="mb-2 block text-[12px] font-bold uppercase tracking-[0.15em] text-neutral-400">
+                          <article
+                            key={experience.id}
+                            className="group relative shrink-0"
+                          >
+                            <div className="relative overflow-hidden rounded-xl border-2 border-black bg-white px-4 py-4 transition-colors duration-200 hover:bg-white sm:px-6">
+                              <div className={experience.link ? "pr-0 sm:pr-20" : ""}>
+                                <span className="mb-2 block text-[11px] font-bold uppercase tracking-[0.15em] text-neutral-400 sm:text-[12px]">
                                   {experience.year}
                                 </span>
 
-                                <h3 className="dela-gothic text-[21px] font-black leading-none tracking-[-0.06em] sm:text-[26px]">
+                                <h3 className="dela-gothic text-[20px] font-black leading-[1.05] tracking-[-0.05em] sm:text-[26px] sm:leading-none sm:tracking-[-0.06em]">
                                   {experience.title}
                                 </h3>
 
-                                <p className="mt-3 max-w-137.5 text-[13px] font-medium leading-[1.35] tracking-[-0.015em] text-[#292929] sm:text-[16px]">
+                                <p className="mt-3 max-w-137.5 text-[13px] font-medium leading-[1.4] tracking-[-0.015em] text-[#292929] sm:text-[16px] sm:leading-[1.35]">
                                   {experience.description}
                                 </p>
                               </div>
@@ -139,10 +142,13 @@ const Profile = ({ direction = 1 }) => {
                                   href={experience.link}
                                   target="_blank"
                                   rel="noreferrer noopener"
-                                  className={`absolute bottom-4 right-4 inline-flex items-center gap-1.5 rounded-full border-2 border-black bg-[#ffef00] px-3 py-2 text-[12px] font-black uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[3px_3px_0_#000] ${FOCUS_RING}`}
+                                  className={`mt-4 flex w-full items-center justify-center gap-1.5 rounded-full border-2 border-black bg-[#ffef00] px-3 py-2.5 text-[11px] font-black uppercase tracking-wide transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[3px_3px_0_#000] sm:absolute sm:bottom-4 sm:right-4 sm:mt-0 sm:w-auto sm:justify-start sm:px-3 sm:py-2 sm:text-[12px] ${FOCUS_RING}`}
                                 >
                                   VIEW
-                                  <ArrowUpRight size={13} strokeWidth={3} />
+                                  <ArrowUpRight
+                                    size={13}
+                                    strokeWidth={3}
+                                  />
                                 </a>
                               ) : null}
                             </div>
@@ -174,7 +180,7 @@ const Profile = ({ direction = 1 }) => {
                             className={`shrink-0 rounded-full border-2 border-black px-3 py-1.5 text-[12px] font-black tracking-wide transition-all duration-200 ${
                               active
                                 ? "bg-[#171717] text-white"
-                                : "bg-[#ff4545] text-white hover:translate-x-0.5 hover:text-black hover:bg-[#fff21c]"
+                                : "bg-white hover:translate-x-0.5 hover:text-black hover:bg-[#fff21c]"
                             }`}
                           >
                             {filter.label}

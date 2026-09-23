@@ -9,7 +9,6 @@ const items = [
   { name: "Profile", Icon: User },
 ];
 
-// mobile = di bawah breakpoint `md` Tailwind (768px)
 const useIsMobile = () => {
   const [isMobile, setIsMobile] = useState(
     () => window.matchMedia("(max-width: 767px)").matches
@@ -20,6 +19,7 @@ const useIsMobile = () => {
     const onChange = (e) => setIsMobile(e.matches);
 
     mq.addEventListener("change", onChange);
+
     return () => mq.removeEventListener("change", onChange);
   }, []);
 
@@ -46,6 +46,7 @@ const Navbar = ({ active, onSelect }) => {
 
   const showNavbar = () => {
     const nav = navRef.current;
+
     if (!nav || isMobileRef.current) return;
 
     if (hideTimeoutRef.current) {
@@ -75,7 +76,10 @@ const Navbar = ({ active, onSelect }) => {
 
   const hideNavbar = () => {
     const nav = navRef.current;
-    if (!nav || isMobileRef.current || isMouseOverNav.current) return;
+
+    if (!nav || isMobileRef.current || isMouseOverNav.current) {
+      return;
+    }
 
     gsap.killTweensOf(nav);
 
@@ -112,20 +116,23 @@ const Navbar = ({ active, onSelect }) => {
     }, 700);
   };
 
-  // Setup awal + listener Tab. Dijalankan ulang kalau pindah mobile <-> desktop.
   useEffect(() => {
     const nav = navRef.current;
+
     if (!nav) return;
 
     gsap.killTweensOf(nav);
 
-    // MOBILE: selalu tampil, tanpa listener Tab
     if (isMobile) {
-      gsap.set(nav, { y: 0, scaleX: 1, scaleY: 1 });
+      gsap.set(nav, {
+        y: 0,
+        scaleX: 1,
+        scaleY: 1,
+      });
+
       return;
     }
 
-    // DESKTOP: sembunyi di awal, muncul saat tekan Tab
     gsap.set(nav, {
       y: "-145%",
       scaleX: 0.75,
@@ -176,6 +183,7 @@ const Navbar = ({ active, onSelect }) => {
     if (isMobileRef.current || index === activeRef.current) return;
 
     const el = getEl(index);
+
     if (!el) return;
 
     gsap.killTweensOf(el);
@@ -192,6 +200,7 @@ const Navbar = ({ active, onSelect }) => {
     if (isMobileRef.current || index === activeRef.current) return;
 
     const el = getEl(index);
+
     if (!el) return;
 
     gsap.killTweensOf(el);
@@ -209,12 +218,21 @@ const Navbar = ({ active, onSelect }) => {
 
     gsap
       .timeline()
-      .to(el, { scale: 1.18, duration: 0.15, ease: "power2.out" })
-      .to(el, { scale: 1, duration: 0.35, ease: "back.out(2)" });
+      .to(el, {
+        scale: 1.18,
+        duration: 0.15,
+        ease: "power2.out",
+      })
+      .to(el, {
+        scale: 1,
+        duration: 0.35,
+        ease: "back.out(2)",
+      });
   };
 
   const handleClick = (index) => {
     const el = getEl(index);
+
     if (!el) return;
 
     if (index === activeRef.current) {
@@ -243,20 +261,25 @@ const Navbar = ({ active, onSelect }) => {
   useEffect(() => {
     return () => {
       itemRefs.current.forEach((el) => {
-        if (el) gsap.killTweensOf(el);
+        if (el) {
+          gsap.killTweensOf(el);
+        }
       });
     };
   }, []);
 
   return (
-    // Wrapper ini yang mengatur posisi (CSS). <nav> di dalamnya khusus dianimasi GSAP,
-    // jadi tidak ada bentrok antara transform Tailwind dan transform GSAP.
-    <div className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex justify-center px-2 pb-[max(12px,env(safe-area-inset-bottom))] md:bottom-auto md:top-6 md:pb-0">
+      <div
+        className="pointer-events-none fixed inset-x-0 bottom-0 z-50 flex justify-center px-1 pb-[max(8px,env(safe-area-inset-bottom))] sm:px-2 sm:pb-[max(12px,env(safe-area-inset-bottom))] md:bottom-auto md:top-6 md:pb-0"
+        style={{
+          "--mobile-nav-space": "92px",
+        }}
+      >      
       <nav
         ref={navRef}
         onMouseEnter={handleNavMouseEnter}
         onMouseLeave={handleNavMouseLeave}
-        className="pointer-events-auto flex h-16 w-[94vw] max-w-143.75 items-center justify-between gap-1 rounded-full border-[3px] border-[#171717] bg-[#f7f7f5] px-2 shadow-[4px_4px_0_#171717] md:h-21.5 md:w-[min(92vw,575px)] md:justify-center md:gap-5 md:px-5 md:shadow-[5px_6px_0_#171717]"
+        className="pointer-events-auto flex h-[clamp(58px,16vw,64px)] w-[calc(100vw-12px)] max-w-107.5 items-center justify-between gap-[clamp(2px,1.5vw,6px)] rounded-full border-[3px] border-[#171717] bg-[#f7f7f5] px-[clamp(5px,2vw,10px)] shadow-[4px_4px_0_#171717] md:h-21.5 md:w-[min(92vw,575px)] md:max-w-none md:justify-center md:gap-5 md:px-5 md:shadow-[5px_6px_0_#171717]"
       >
         {items.map((item, index) => {
           const isActive = active === index;
@@ -272,7 +295,7 @@ const Navbar = ({ active, onSelect }) => {
               onMouseLeave={() => handleMouseLeave(index)}
               aria-label={item.name}
               aria-current={isActive ? "page" : undefined}
-              className={`nav-item relative flex h-11.5 w-11.5 shrink-0 items-center justify-center rounded-full border-2 border-[#171717] p-0 outline-none transition-colors duration-200 md:h-17.5 md:w-17.5 md:border-[3px] ${
+              className={`nav-item relative flex h-[clamp(42px,12vw,46px)] w-[clamp(42px,12vw,46px)] shrink-0 items-center justify-center rounded-full border-2 border-[#171717] p-0 outline-none transition-colors duration-200 md:h-17.5 md:w-17.5 md:border-[3px] ${
                 isActive
                   ? "bg-[#fff21c] shadow-[3px_4px_0_#171717]"
                   : "bg-white md:hover:bg-[#5f94ff]"
@@ -287,7 +310,7 @@ const Navbar = ({ active, onSelect }) => {
               />
 
               <Icon
-                className="pointer-events-none relative z-10 h-5 w-5 select-none text-[#171717] md:h-8.5 md:w-8.5"
+                className="pointer-events-none relative z-10 h-[clamp(19px,5.5vw,21px)] w-[clamp(19px,5.5vw,21px)] select-none text-[#171717] md:h-8.5 md:w-8.5"
                 strokeWidth={2.5}
               />
             </button>

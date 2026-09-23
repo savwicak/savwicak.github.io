@@ -105,7 +105,7 @@ function Homepage({ direction }) {
   }, [direction]);
 
   return (
-    <div className="flex min-h-screen w-full items-center justify-center overflow-hidden px-5 py-10 sm:px-10 lg:py-0">
+    <div className="flex h-screen pb-30 md:pb-0 w-full items-center justify-center overflow-hidden px-5 py-10 sm:px-10 lg:py-0">
       <div className="grid w-full max-w-6xl grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-20">
         
         {/* CONTENT */}

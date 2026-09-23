@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-
 import { projects } from "../data/ProjectData";
 import ProjectCard from "../components/ProjectCard";
 
@@ -41,14 +40,15 @@ const Project = ({ direction }) => {
   }, [direction]);
 
   return (
-    <div className="h-screen w-full overflow-hidden">
-      <div className="mx-auto flex h-full w-full max-w-8xl flex-col gap-4 overflow-y-auto p-5 sm:gap-5 sm:p-6">
+    <div className="h-screen w-full overflow-hidden pb-15 md:pb-0">
+      <div className="mx-auto flex h-full w-full max-w-8xl flex-col gap-4 overflow-y-auto overscroll-contain p-5 touch-pan-y sm:gap-5 sm:p-6">
         {projects.map((project, index) => (
           <div
             key={project.id}
             ref={(el) => {
               cardRefs.current[index] = el;
             }}
+            className="shrink-0"
           >
             <ProjectCard
               project={project}
@@ -57,6 +57,8 @@ const Project = ({ direction }) => {
             />
           </div>
         ))}
+
+        <div className="h-20 shrink-0 md:hidden" />
       </div>
     </div>
   );

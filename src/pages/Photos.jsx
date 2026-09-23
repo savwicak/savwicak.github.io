@@ -62,9 +62,9 @@ function Photos() {
   };
 
   return (
-    <div className="h-screen w-full overflow-y-auto overscroll-y-contain text-[#171717]">
-      <div className="mx-auto w-full max-w-[1700px] px-4 py-6 sm:px-6 sm:py-8 lg:px-10 lg:py-10">
-        <div className="border-b-[3px] border-[#171717] pb-5">
+    <div className="h-screen w-full overflow-hidden pb-15 text-[#171717] md:pb-0">
+      <div className="mx-auto h-full w-full max-w-[1700px] overflow-y-auto overscroll-contain px-4 py-4 touch-pan-y sm:px-6 sm:py-8 lg:px-10 lg:py-10">
+        <div className="border-b-[3px] border-[#171717] pb-2">
           <div className="flex w-full gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:overflow-visible">
             {photoCategories.map((item) => {
               const active = category === item;
@@ -92,7 +92,7 @@ function Photos() {
 
         <main
           ref={gridRef}
-          className="grid grid-cols-2 gap-4 py-8 sm:gap-5 md:grid-cols-3 lg:grid-cols-4 lg:gap-6"
+          className="grid grid-cols-2 gap-4 py-6 sm:gap-5 md:grid-cols-3 lg:grid-cols-4 lg:gap-6"
         >
           {filtered.map((photo, index) => (
             <PhotoCard
@@ -104,9 +104,14 @@ function Photos() {
             />
           ))}
         </main>
+
+        <div className="h-20 md:hidden" />
       </div>
 
-      <PhotoPreview photo={selected} onClose={() => setSelected(null)} />
+      <PhotoPreview
+        photo={selected}
+        onClose={() => setSelected(null)}
+      />
     </div>
   );
 }

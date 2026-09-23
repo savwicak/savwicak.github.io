@@ -15,9 +15,12 @@ function App() {
   const [direction, setDirection] = useState(1);
 
   const pageRef = useRef(null);
+  const mainRef = useRef(null);
+
   const dragStartX = useRef(0);
   const dragStartY = useRef(0);
   const dragX = useRef(0);
+
   const isDragging = useRef(false);
   const isHorizontalDrag = useRef(false);
   const isAnimating = useRef(false);
@@ -126,7 +129,15 @@ function App() {
   const handlePageChange = (nextIndex) => {
     if (nextIndex === activeTab || isAnimating.current) return;
 
-    const dir = nextIndex > activeTab ? 1 : -1;
+    let dir;
+
+    if (nextIndex > activeTab) {
+      dir = 1;
+    } else if (nextIndex < activeTab) {
+      dir = -1;
+    } else {
+      return;
+    }
 
     animatePageChange(nextIndex, dir);
   };
@@ -150,7 +161,13 @@ function App() {
   };
 
   const handlePointerDown = (event) => {
-    if (event.target.closest("button, a, input, textarea, select")) return;
+    if (
+      event.target.closest(
+        "button, a, input, textarea, select, [data-no-swipe]"
+      )
+    ) {
+      return;
+    }
 
     if (isAnimating.current) return;
 
@@ -160,6 +177,10 @@ function App() {
     dragStartX.current = event.clientX;
     dragStartY.current = event.clientY;
     dragX.current = 0;
+
+    if (event.currentTarget.setPointerCapture) {
+      event.currentTarget.setPointerCapture(event.pointerId);
+    }
 
     gsap.killTweensOf(pageRef.current);
 
@@ -177,14 +198,16 @@ function App() {
     const deltaY = event.clientY - dragStartY.current;
 
     if (!isHorizontalDrag.current) {
-      if (Math.abs(deltaX) < 8 && Math.abs(deltaY) < 8) return;
+      if (Math.abs(deltaX) < 8 && Math.abs(deltaY) < 8) {
+        return;
+      }
 
       if (Math.abs(deltaY) > Math.abs(deltaX)) {
         isDragging.current = false;
 
         if (pageRef.current) {
           gsap.set(pageRef.current, {
-            cursor: "grab",
+            cursor: isBlogPost ? "default" : "grab",
           });
         }
 
@@ -235,10 +258,16 @@ function App() {
     }
   };
 
-  const handlePointerUp = () => {
+  const handlePointerUp = (event) => {
     if (!isDragging.current || isAnimating.current) return;
 
     const wasHorizontal = isHorizontalDrag.current;
+
+    if (event.currentTarget.releasePointerCapture) {
+      try {
+        event.currentTarget.releasePointerCapture(event.pointerId);
+      } catch {}
+    }
 
     if (!wasHorizontal) {
       resetDrag();
@@ -285,7 +314,13 @@ function App() {
     }
   };
 
-  const handlePointerCancel = () => {
+  const handlePointerCancel = (event) => {
+    if (event.currentTarget.releasePointerCapture) {
+      try {
+        event.currentTarget.releasePointerCapture(event.pointerId);
+      } catch {}
+    }
+
     if (!isDragging.current) return;
 
     resetDrag();
@@ -294,25 +329,24 @@ function App() {
   return (
     <div className="h-dvh w-screen overflow-hidden bg-gray-50">
       <main
-        className="relative h-dvh w-full overflow-hidden touch-pan-y select-none"
+        ref={mainRef}
+        className="relative h-dvh w-full overflow-hidden touch-pan-y md:pb-0"
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={handlePointerUp}
         onPointerCancel={handlePointerCancel}
-        onPointerLeave={handlePointerCancel}
       >
-        <div
-          ref={pageRef}
-          className={`min-h-full w-full will-change-transform ${
-            isBlogPost ? "" : "cursor-grab"
-          }`}
-        >
-          <ActivePage direction={direction} />
-        </div>
+      <div
+        ref={pageRef}
+        className={`min-h-full w-full will-change-transform ${
+          isBlogPost ? "" : "cursor-grab"
+        }`}
+      >
+        <ActivePage direction={direction} />
+      </div>
       </main>
 
       {/* DESKTOP */}
-
       <div className="hidden md:block">
         <button
           type="button"
@@ -341,7 +375,10 @@ function App() {
         </button>
       </div>
 
-      <Navbar active={activeTab} onSelect={handlePageChange} />
+      <Navbar
+        active={activeTab}
+        onSelect={handlePageChange}
+      />
     </div>
   );
 }
