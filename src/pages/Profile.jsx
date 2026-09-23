@@ -128,7 +128,7 @@ const Profile = ({ direction = 1 }) => {
                                   {experience.year}
                                 </span>
 
-                                <h3 className="dela-gothic text-[20px] font-black leading-[1.05] tracking-[-0.05em] sm:text-[26px] sm:leading-none sm:tracking-[-0.06em]">
+                                <h3 className="dela-gothic text-[20px] font-black leading-[1.05] tracking-tighter sm:text-[26px] sm:leading-none sm:tracking-[-0.06em]">
                                   {experience.title}
                                 </h3>
 

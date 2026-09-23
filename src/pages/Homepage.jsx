@@ -105,7 +105,7 @@ function Homepage({ direction }) {
   }, [direction]);
 
   return (
-    <div className="flex h-screen pb-30 md:pb-0 w-full items-center justify-center overflow-hidden px-5 py-10 sm:px-10 lg:py-0">
+    <div className="flex h-screen pb-35 md:pb-0 w-full items-center justify-center overflow-hidden px-5 py-10 sm:px-10 lg:py-0">
       <div className="grid w-full max-w-6xl grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-12 lg:gap-20">
         
         {/* CONTENT */}
@@ -181,7 +181,7 @@ function Homepage({ direction }) {
           ref={imageRef}
           className="order-1 flex justify-center md:order-2 md:justify-end"
         >
-          <div className="group relative w-full max-w-70 sm:max-w-80 lg:max-w-105 xl:max-w-115">
+          <div className="group relative w-full max-w-50 sm:max-w-80 lg:max-w-105 xl:max-w-115">
             <div className="relative z-20 aspect-square overflow-hidden rounded-full border-[3px] border-[#171717] bg-[#f0f0ed] shadow-[7px_7px_0_#171717] transition-transform duration-500 ease-out group-hover:scale-105">
               <img
                 src="/images/profile.gif"
