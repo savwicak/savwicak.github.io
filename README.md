@@ -1,16 +1,25 @@
-# React + Vite
+# Personal / portfolio Website
+a website that contains my favorite things and what I've done, and i link my social media too
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+AI USAGE: I use AI to debug and clean the web design
 
-Currently, two official plugins are available:
+<img width="1365" height="677" alt="image" src="https://github.com/user-attachments/assets/bc27d81d-ee46-47ca-babb-f72e9833dcc0" />
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech Stack
 
-## React Compiler
+<p align="left">
+  <img src="https://skillicons.dev/icons?i=react,tailwind,js" />
+</p>
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+<p>
+  <img src="https://img.shields.io/badge/Google_Fonts-4285F4?style=for-the-badge&logo=google&logoColor=white">
+</p>
 
-## Expanding the ESLint configuration
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## PAGES
+
+* Home (short introduction)
+* Project (list of my best project)
+* Blog (sharing my stories or maybe study cases)
+* Photos (my best photo bc)
+* Profile (more about me, like experience, certificates)
