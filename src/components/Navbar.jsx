@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { Home, Star, List, Camera, User } from "lucide-react";
+import { Home, Star, FileText, Camera, User } from "lucide-react";
 
 const items = [
   { name: "Home", Icon: Home },
   { name: "Favorite", Icon: Star },
-  { name: "List", Icon: List },
+  { name: "List", Icon: FileText },
   { name: "Camera", Icon: Camera },
   { name: "Profile", Icon: User },
 ];

@@ -21,12 +21,12 @@ const BlogCard = ({ blog, onClick }) => {
 
   return (
     <div ref={cardRef} data-blog-card className="relative">
-      <div className="absolute inset-0 translate-x-1.5 translate-y-1.5 rounded-2xl border-2 border-[#171717] bg-[#ff4545]" />
-
-      <article
-        onClick={onClick}
-        className="group relative cursor-pointer rounded-2xl border-2 border-[#171717] bg-white px-6 py-7 transition-all duration-300 ease-out hover:translate-x-2 hover:bg-white"
-      >
+      <div className="pointer-events-none absolute inset-0 translate-x-1.5 translate-y-1.5 rounded-2xl border-2 border-[#171717] bg-[#ff4545]" />
+        <article
+          data-no-swipe
+          onClick={onClick}
+          className="group relative z-10 cursor-pointer rounded-2xl border-2 border-[#171717] bg-white px-6 py-7 transition-all duration-300 ease-out hover:translate-x-2 hover:bg-white"
+        >
         <div className="flex items-center justify-between gap-6">
           <div className="min-w-0 flex-1">
             <span className="mb-1 hidden text-[12px] font-bold uppercase text-neutral-400 sm:block">
